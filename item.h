@@ -1,7 +1,8 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "headers.h"
+#include "SFML/Window.hpp"
+#include "SFML/Graphics.hpp"
 
 class item
 {
@@ -10,7 +11,7 @@ public:
 	item();
 
 	//DESTRUTOR
-	~item();
+	virtual ~item();
 
 	//FUNCOES
 	virtual void carregar(std::string nome_arquivo);

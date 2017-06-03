@@ -27,6 +27,7 @@ private:
 	static GameState estado_jogo;
 	static sf::RenderWindow janela;
 	static sf::Sprite background;
+	static gerenciador_itens _gerenciador_itens;
 	static bool selecionado;
 };
 #endif // !JOGO_H

@@ -5,24 +5,26 @@ jogo::GameState jogo::estado_jogo = Inicializado;
 sf::RenderWindow jogo::janela;
 sf::Sprite jogo::background;
 bool jogo::selecionado = false;
+gerenciador_itens jogo::_gerenciador_itens;
 
 void jogo::Start()
 {
 	if (estado_jogo != Inicializado)
 		return;
 
-	janela.create(sf::VideoMode(1024, 768), "99 Cartas", sf::Style::Close); //DEFINE TAMANHO DA JANELA, O QUE APARECE NO CABEÇALHO E FUNCOES DISPONIVEIS (FECHAR, RESIZE, MINIMIZAR)
+	janela.create(sf::VideoMode(1024, 768), "HARRY", sf::Style::Close); //DEFINE TAMANHO DA JANELA, O QUE APARECE NO CABEÇALHO E FUNCOES DISPONIVEIS (FECHAR, RESIZE, MINIMIZAR)
+
+	item *dobby = new item();
+
+	dobby->carregar("imagens/dobby.png");
+	dobby->set_posicao(304, 64);
+	_gerenciador_itens.adicionar("pilha_c2", dobby);
 
 	sf::Texture imagem;
 	imagem.loadFromFile("imagens/fundo2.jpg");
 	background.setTexture(imagem); //DEFINE O BACKGROUND
 
 	estado_jogo = jogo::Mostrando_Tela_Inicial;
-
-	item harry;
-
-	harry.carregar("imagens/harry.png");
-	harry.desenhar(janela);
 
 	while (!IsExiting())
 	{
@@ -31,6 +33,11 @@ void jogo::Start()
 
 	janela.close();
 }
+
+//void jogo::CriandoTudo()
+//{
+//	
+//}
 
 void jogo::JogarNovamente()
 {
@@ -82,8 +89,10 @@ void jogo::loop_jogo()
 		while (janela.pollEvent(evento_atual))
 		{
 			janela.clear();
-			//janela.draw(background);
+			janela.draw(background);
+			_gerenciador_itens.desenhar_todos(janela);
 			janela.display();
+			
 
 			switch (evento_atual.type)
 			{
