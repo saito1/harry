@@ -3,6 +3,7 @@
 item::item()
 {
 	carregou = false;
+	destruido = false;
 }
 
 item::~item()

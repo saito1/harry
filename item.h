@@ -44,5 +44,6 @@ private:
 	int valor;
 	bool carregou;
 	bool estado;
+	bool destruido;
 };
 #endif
