@@ -1,11 +1,7 @@
-/*
- * ListaSimples.hpp
- *
- *  Created on: 12/06/2017
- *      Author: renatasarmet
- */
+#ifndef LISTASIMPLES_HPP
+#define LISTASIMPLES_HPP
 
-#include "Node.hpp"
+#include "Nodetype.hpp"
 #include <iostream>
 using namespace std;
 
@@ -23,9 +19,9 @@ public:
 	void Insere(int x);
 	void InsereADireita(int x);
 	void ProcuraRemove(int x, bool DeuCerto); //DEPOIS PARAMETRO DE BUSCA SERA ALTERADO
-	void Remove(Node *Premove, bool DeuCerto);
+	void Remove(Nodetype *Premove, bool DeuCerto);
 private:
-	Node *P;
+	Nodetype *P;
 };
 
 
@@ -36,7 +32,7 @@ ListaSimples::ListaSimples(){
 }
 
 void ListaSimples::Cria(int x){
-	P = new Node();
+	P = new Nodetype();
 	P->next = NULL;
 	P->id = x;
 	//P->info = string(x) + ".png"; FAZER VERIFICACAO DA IMAGEM, NAO EH ATRAVES DO ID
@@ -51,7 +47,7 @@ bool ListaSimples::Vazia(){
 }
 
 void ListaSimples::ExibeLista(){
-	Node *Paux;
+	Nodetype *Paux;
 	Paux = P;
 	while(Paux!=NULL){
 		cout<<Paux->id<<endl;
@@ -68,8 +64,8 @@ void ListaSimples::Insere(int x){
 }
 
 void ListaSimples::InsereADireita(int x){
-	Node *Paux;
-	Node *Paux2 = new Node();
+	Nodetype *Paux;
+	Nodetype *Paux2 = new Nodetype();
 	Paux = P;
 	while(Paux->next!=NULL){
 		Paux = Paux->next;
@@ -81,7 +77,7 @@ void ListaSimples::InsereADireita(int x){
 }
 
 void ListaSimples::ProcuraRemove(int x, bool DeuCerto){
-	Node *Paux;
+	Nodetype *Paux;
 	if(Vazia()){
 		DeuCerto = false;
 	}
@@ -101,11 +97,14 @@ void ListaSimples::ProcuraRemove(int x, bool DeuCerto){
 	}
 }
 
-void ListaSimples::Remove(Node *Premove, bool DeuCerto){
-	Node *Paux2;
+void ListaSimples::Remove(Nodetype *Premove, bool DeuCerto){
+	Nodetype *Paux2;
 	Paux2 = Premove;
 	Premove = Premove->next;
 	Paux2->next = Paux2->next->next;
 	delete Premove;
 	DeuCerto = true;
 }
+
+
+#endif
