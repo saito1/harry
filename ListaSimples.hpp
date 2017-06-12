@@ -33,9 +33,9 @@ ListaSimples::ListaSimples(){
 
 void ListaSimples::Cria(int x){
 	P = new Nodetype();
-	P->next = NULL;
-	P->id = x;
-	//P->info = string(x) + ".png"; FAZER VERIFICACAO DA IMAGEM, NAO EH ATRAVES DO ID
+	P->set_next(NULL);
+	P->set_id(x);
+	//P->set_info(string(x) + ".png"); FAZER VERIFICACAO DA IMAGEM, NAO EH ATRAVES DO ID
 }
 
 bool ListaSimples::Vazia(){
@@ -50,8 +50,8 @@ void ListaSimples::ExibeLista(){
 	Nodetype *Paux;
 	Paux = P;
 	while(Paux!=NULL){
-		cout<<Paux->id<<endl;
-		Paux = Paux->next;
+		cout<<Paux->get_id()<<endl;
+		Paux = Paux->get_next();
 	}
 }
 
@@ -67,12 +67,12 @@ void ListaSimples::InsereADireita(int x){
 	Nodetype *Paux;
 	Nodetype *Paux2 = new Nodetype();
 	Paux = P;
-	while(Paux->next!=NULL){
-		Paux = Paux->next;
+	while(Paux->get_next()!=NULL){
+		Paux = Paux->get_next();
 	}
-	Paux->next = Paux2;
-	Paux2->next = NULL;
-	Paux2->id = x;
+	Paux->set_next(Paux2);
+	Paux2->set_next(NULL);
+	Paux2->set_id(x);
 	//INSERIR IMAGEM NO INFO TAMBEM
 }
 
@@ -81,17 +81,17 @@ void ListaSimples::ProcuraRemove(int x, bool DeuCerto){
 	if(Vazia()){
 		DeuCerto = false;
 	}
-	else if(P->id==x){
+	else if(P->get_id()==x){
 		Paux = P;
-		P = P->next;
+		P = P->get_next();
 		delete Paux;
 	}
 	else{
 		Paux = P;
-		while((Paux->next->id!=x)&&(Paux->next!=NULL)){
-			Paux = Paux->next;
+		while((Paux->get_next()->get_id()!=x)&&(Paux->get_next()!=NULL)){
+			Paux = Paux->get_next();
 		}
-		if(Paux->next!=NULL){
+		if(Paux->get_next()!=NULL){
 			Remove(Paux, DeuCerto);
 		}
 	}
@@ -100,8 +100,8 @@ void ListaSimples::ProcuraRemove(int x, bool DeuCerto){
 void ListaSimples::Remove(Nodetype *Premove, bool DeuCerto){
 	Nodetype *Paux2;
 	Paux2 = Premove;
-	Premove = Premove->next;
-	Paux2->next = Paux2->next->next;
+	Premove = Premove->get_next();
+	Paux2->set_next(Paux2->get_next()->get_next());
 	delete Premove;
 	DeuCerto = true;
 }
