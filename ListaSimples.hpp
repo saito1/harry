@@ -3,6 +3,8 @@
 
 #include "Nodetype.hpp"
 #include <iostream>
+#include <time.h>
+#include <ctime>
 using namespace std;
 
 //implementação da classe Lista
@@ -13,15 +15,20 @@ public:
 	ListaSimples();
 	//~ListaSimples();
 
-	void Cria(int x);
+	void Cria(Nodetype *x);
 	bool Vazia();
 	void ExibeLista();
-	void Insere(int x);
-	void InsereADireita(int x);
+	void Insere(Nodetype *x);
+	void InsereADireita(Nodetype *x);
 	void ProcuraRemove(int x, bool DeuCerto); //DEPOIS PARAMETRO DE BUSCA SERA ALTERADO
-	void Remove(Nodetype *Premove, bool DeuCerto);
+
+	Nodetype* PegaElementoAletorio() const; // pega um elemento na lista aleatorio
+	int QuantidadeElementos() const; // conta a quantidade de elementos da lista
+
+
 private:
 	Nodetype *P;
+	void Remove(Nodetype *Premove, bool DeuCerto); // metodo privado pois quem deve ser chamado eh o procura remove
 };
 
 
@@ -31,11 +38,10 @@ ListaSimples::ListaSimples(){
 	P = NULL;
 }
 
-void ListaSimples::Cria(int x){
+void ListaSimples::Cria(Nodetype *x){
 	P = new Nodetype();
+	P = x;
 	P->set_next(NULL);
-	P->set_id(x);
-	//P->set_info(string(x) + ".png"); FAZER VERIFICACAO DA IMAGEM, NAO EH ATRAVES DO ID
 }
 
 bool ListaSimples::Vazia(){
@@ -50,12 +56,15 @@ void ListaSimples::ExibeLista(){
 	Nodetype *Paux;
 	Paux = P;
 	while(Paux!=NULL){
-		cout<<Paux->get_id()<<endl;
+		cout<<Paux->get_id() << " ";
+		cout << "P NEXT : " << Paux->get_next() << endl;
 		Paux = Paux->get_next();
+
 	}
+	cout << endl;
 }
 
-void ListaSimples::Insere(int x){
+void ListaSimples::Insere(Nodetype *x){
 	if(Vazia()==true){
 		Cria(x);
 	}else{
@@ -63,7 +72,7 @@ void ListaSimples::Insere(int x){
 	}
 }
 
-void ListaSimples::InsereADireita(int x){
+void ListaSimples::InsereADireita(Nodetype *x){
 	Nodetype *Paux;
 	Nodetype *Paux2 = new Nodetype();
 	Paux = P;
@@ -71,9 +80,9 @@ void ListaSimples::InsereADireita(int x){
 		Paux = Paux->get_next();
 	}
 	Paux->set_next(Paux2);
+	Paux2 = x;
 	Paux2->set_next(NULL);
-	Paux2->set_id(x);
-	//INSERIR IMAGEM NO INFO TAMBEM
+	cout << "INSERIDO ID = " << Paux2->get_id() << endl;
 }
 
 void ListaSimples::ProcuraRemove(int x, bool DeuCerto){
@@ -106,5 +115,33 @@ void ListaSimples::Remove(Nodetype *Premove, bool DeuCerto){
 	DeuCerto = true;
 }
 
+int ListaSimples::QuantidadeElementos() const {
+	Nodetype *Paux;
+	Paux = P;
+	int q = 0;
+	while(Paux!=NULL){
+		q += 1;
+		Paux = Paux->get_next();
+	}
+
+	return q;
+}
+
+
+Nodetype* ListaSimples::PegaElementoAletorio() const{
+
+	Nodetype *Paux;
+	Paux = P;
+	int r,i;
+	srand(time(NULL));
+	r = (rand() % QuantidadeElementos());
+
+
+	for(i=0;i<r;i++){
+		Paux = Paux->get_next();
+	}
+
+	return Paux;
+}
 
 #endif

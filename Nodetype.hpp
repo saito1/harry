@@ -37,7 +37,7 @@ Nodetype::Nodetype(){
 }
 
 Nodetype::~Nodetype(){
-
+	cout << "GAME OVER NO DESTRUTOR DO ID = " << get_id() <<endl;
 }
 
 
@@ -58,7 +58,7 @@ int Nodetype::get_id() const{
 	return this->id;
 }
 void Nodetype::set_id(int pid){
-	if(pid>0)
+	if(pid>=0)
 		this->id = pid;
 }
 
