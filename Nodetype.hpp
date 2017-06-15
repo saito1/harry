@@ -19,7 +19,8 @@ public:
 	void set_info(string);
 	int get_id() const;
 	void set_id(int);
-
+	void ExibeInformacoes() const;
+	void CopiaNode(Nodetype *original);
 
 private:
 	Nodetype *next;
@@ -60,6 +61,18 @@ int Nodetype::get_id() const{
 void Nodetype::set_id(int pid){
 	if(pid>=0)
 		this->id = pid;
+}
+
+void Nodetype::ExibeInformacoes() const{
+	cout << "ID = " << get_id() << endl;
+	cout << "INFO = " << get_info() << endl;
+	cout << "NEXT = " << get_next() << endl;
+}
+
+void Nodetype::CopiaNode(Nodetype *original){
+	set_next(original->get_next());
+	set_id(original->get_id());
+	set_info(original->get_info());
 }
 
 #endif

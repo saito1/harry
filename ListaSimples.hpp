@@ -22,7 +22,8 @@ public:
 	void InsereADireita(Nodetype *x);
 	void ProcuraRemove(int x, bool DeuCerto); //DEPOIS PARAMETRO DE BUSCA SERA ALTERADO
 
-	Nodetype* PegaElementoAletorio() const; // pega um elemento na lista aleatorio
+	Nodetype* PegaElementoAleatorio() const; // pega um elemento na lista aleatorio
+	Nodetype* PegaElementoN(int n) const; // pega o N-esimo elemento da lista
 	int QuantidadeElementos() const; // conta a quantidade de elementos da lista
 
 
@@ -59,9 +60,8 @@ void ListaSimples::ExibeLista(){
 		cout<<"ID: "<<Paux->get_id();
 		cout<<"  e  Info: " <<Paux->get_info() << endl;
 		Paux = Paux->get_next();
-
 	}
-	cout << endl;
+
 }
 
 void ListaSimples::Insere(Nodetype *x){
@@ -127,16 +127,28 @@ int ListaSimples::QuantidadeElementos() const {
 }
 
 
-Nodetype* ListaSimples::PegaElementoAletorio() const{
+Nodetype* ListaSimples::PegaElementoAleatorio() const{
 
 	Nodetype *Paux;
 	Paux = P;
 	int r,i;
-	srand(time(NULL));
 	r = (rand() % QuantidadeElementos());
 
+	//cout << "------------------- r = " << r << endl;
 
-	for(i=0;i<r;i++){
+	for(i=1;i<r;i++){
+		Paux = Paux->get_next();
+	}
+
+	return Paux;
+}
+
+Nodetype* ListaSimples::PegaElementoN(int n) const{
+	Nodetype *Paux;
+	Paux = P;
+	int i;
+
+	for(i=1;i<n;i++){
 		Paux = Paux->get_next();
 	}
 
