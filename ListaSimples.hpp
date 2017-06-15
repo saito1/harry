@@ -7,7 +7,7 @@
 #include <ctime>
 using namespace std;
 
-//implementação da classe Lista
+//implementação da classe Lista Simples
 
 class ListaSimples
 {
@@ -54,7 +54,6 @@ bool ListaSimples::Vazia(){
 
 void ListaSimples::ExibeLista(){
 	Nodetype *Paux;
-	cout << "Listando todos os elementos da lista " << endl;
 	Paux = P;
 	while(Paux!=NULL){
 		cout<<"ID: "<<Paux->get_id();
