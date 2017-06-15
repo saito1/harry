@@ -12,6 +12,9 @@ public:
 	//DESTRUTOR
 	~varinha();
 
+	void update_todos();
+	void update();
+
 	enum estado_varinha {
 		Rotacionando, Atirando, Puxando, Feitico_lancado, Acertou
 	}; // estado que o jogo pode estar durante a partida
@@ -20,16 +23,23 @@ public:
 
 	virtual float get_rotacao() const;
 
+	feitico _feitico; 
+
 	sf::Sprite _sprite;
 
 	static estado_varinha _estado_varinha;
-	static float dir;
 
 private:
 	sf::Sprite feitico;
-	sf::Texture _feitico;
 	sf::Texture _imagem;
 	std::string nome_arquivo;
-	int direcao_rotacao;
+	float direcao_rotacao;
+
+	sf::Clock clock;
+	float timeDelta;
+
+	float _velocity;
+	float _angle;
+	float _elapsedTimeSinceStart;
 };
 #endif
