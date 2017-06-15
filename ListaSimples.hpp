@@ -54,10 +54,11 @@ bool ListaSimples::Vazia(){
 
 void ListaSimples::ExibeLista(){
 	Nodetype *Paux;
+	cout << "Listando todos os elementos da lista " << endl;
 	Paux = P;
 	while(Paux!=NULL){
-		cout<<Paux->get_id() << " ";
-		cout << "P NEXT : " << Paux->get_next() << endl;
+		cout<<"ID: "<<Paux->get_id();
+		cout<<"  e  Info: " <<Paux->get_info() << endl;
 		Paux = Paux->get_next();
 
 	}
@@ -75,14 +76,13 @@ void ListaSimples::Insere(Nodetype *x){
 void ListaSimples::InsereADireita(Nodetype *x){
 	Nodetype *Paux;
 	Nodetype *Paux2 = new Nodetype();
+	Paux2 = x;
+	Paux2->set_next(NULL);
 	Paux = P;
 	while(Paux->get_next()!=NULL){
 		Paux = Paux->get_next();
 	}
 	Paux->set_next(Paux2);
-	Paux2 = x;
-	Paux2->set_next(NULL);
-	cout << "INSERIDO ID = " << Paux2->get_id() << endl;
 }
 
 void ListaSimples::ProcuraRemove(int x, bool DeuCerto){

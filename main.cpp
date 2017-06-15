@@ -19,14 +19,14 @@ int main()
 //    no1->set_next(NULL);
 
 
-    cout << "Inserindo e exibindo todosItens:" << endl;
+    cout << "Inserindo..." << endl;
 
 	no1->set_id(1);
-	cout << "id no1 = " << no1->get_id() << endl;
+	no1->set_info("1.png");
 	todosItens.Insere(no1);
 
 	no2->set_id(2);
-	cout << "id no2 = " << no2->get_id() << endl;
+	no2->set_info("2.png");
 	todosItens.Insere(no2);
 
 //	no3->set_id(3);
@@ -39,7 +39,7 @@ int main()
 //	todosItens.Insere(no5);
 
 
-    todosItens.ExibeLista(); // TEM ALGO ERRADO COM EXIBE LISTA OU INSERE?
+    todosItens.ExibeLista();
 //
 //    cout << "Quantidade de elementos todosItens: " << todosItens.QuantidadeElementos() << endl;
 //
