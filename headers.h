@@ -7,6 +7,10 @@
 #include <cstdlib>
 #include <stdio.h>
 #include <math.h>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+#include <locale>
 
 #include "item.h"
 #include "menu.h"

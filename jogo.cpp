@@ -3,13 +3,15 @@
 
 jogo::GameState jogo::estado_jogo = Inicializado;
 sf::RenderWindow jogo::janela;
+sf::Text jogo::timerText;
 sf::Sprite jogo::background;
 bool feitico::lancado = false;
 gerenciador_itens jogo::_gerenciador_itens;
 varinha::estado_varinha varinha::_estado_varinha = Rotacionando;
 float feitico::dir = 0;
+int jogo::countdown = 30;
 
-void jogo::Start(varinha* hook)
+void jogo::Start(varinha* hook, sf::Clock & clock)
 {
 	if (estado_jogo != Inicializado)
 		return;
@@ -24,7 +26,7 @@ void jogo::Start(varinha* hook)
 
 	while (!IsExiting())
 	{
-		loop_jogo(hook);
+		loop_jogo(hook, clock);
 	}
 
 	janela.close();
@@ -32,14 +34,34 @@ void jogo::Start(varinha* hook)
 
 void jogo::CriandoTudo()
 {
+	//TESTE
+	//GAME CLOCK & TIMER
+	sf::Clock clock;
+	//int countdown = 30;
+
+	//LOAD GAME TIMER FONT
+	sf::Font timerFont;
+	timerFont.loadFromFile("imagens/harry.ttf");
+
+	//convert countdown to a string
+	string countdownString = "00:" + to_string(countdown);
+
+	//LOAD FONT AND TEXT
+	//sf::Text timerText;
+	timerText.setFont(timerFont);
+	timerText.setString(countdownString);
+	timerText.setPosition(200, 22);
+	timerText.setCharacterSize(30);
+	timerText.setFillColor(sf::Color::Black);
+
 	varinha *hook = new varinha();
 
-	jogo::Start(hook);
+	jogo::Start(hook, clock);
 }
 
-void jogo::JogarNovamente(varinha* hook)
+void jogo::JogarNovamente(varinha* hook, sf::Clock & clock)
 {
-	jogo::Start(hook);
+	jogo::Start(hook, clock);
 	estado_jogo = jogo::Jogando;
 }
 
@@ -51,7 +73,7 @@ bool jogo::IsExiting()
 		return false;
 }
 
-void jogo::loop_jogo(varinha* hook)
+void jogo::loop_jogo(varinha* hook, sf::Clock & clock)
 {
 	switch (estado_jogo)
 	{
@@ -70,64 +92,99 @@ void jogo::loop_jogo(varinha* hook)
 		//mostrar_instrucao();
 		break;
 	}
+	case jogo::Mostrando_Transicao:
+	{
+		mostrar_transicao();
+		break;
+	}
 	case jogo::Ganhando:
 	{
-		mostrar_ganhou(hook);
+		mostrar_ganhou(hook, clock);
 		break;
 	}
 	case jogo::Perdendo:
 	{
-		mostrar_perdeu(hook);
+		mostrar_perdeu(hook, clock);
 		break;
 	}
 	case jogo::Jogando:
 	{
 		sf::Event evento_atual;
+		sf::Sprite botao_pausar;
+		sf::Texture imagem1;
+		sf::Sprite botao_sair;
+		sf::Texture imagem2;
+
+		imagem1.loadFromFile("imagens/pausar.png");
+		botao_pausar.setTexture(imagem1);
+		botao_pausar.setPosition(897, 30);
+
+		imagem2.loadFromFile("imagens/sair.png");
+		botao_sair.setTexture(imagem2);
+		botao_sair.setPosition(910, 75);
+
+		//TIMER - 30 SECONDS
+		int timer = clock.getElapsedTime().asSeconds();
+
+		if (timer > 0) 
+		{
+			countdown = countdown - 1;
+			string countdownString = "00:" + to_string(countdown);
+			timerText.setString(countdownString);
+			clock.restart();
+		}
 
 		janela.clear();
 		janela.draw(background);
 		hook->desenhar(janela);
 		hook->update_todos();
 		_gerenciador_itens.desenhar_todos(janela);
+		janela.draw(timerText);
+		janela.draw(botao_pausar);
+		janela.draw(botao_sair);
 		janela.display();
 
-		while (janela.pollEvent(evento_atual))
+		janela.pollEvent(evento_atual);
+
+		switch (evento_atual.type)
 		{
-			switch (evento_atual.type)
+		case sf::Event::Closed:
+			estado_jogo = jogo::Saindo;
+			break;
+		case sf::Event::KeyPressed:
+			if (evento_atual.key.code == sf::Keyboard::Escape)
+				mostrar_menu();
+			break;
+		case sf::Event::MouseButtonPressed:
+			if (evento_atual.mouseButton.button == sf::Mouse::Left && feitico::lancado == false)
 			{
-			case sf::Event::Closed:
-				estado_jogo = jogo::Saindo;
-				break;
-
-			case sf::Event::KeyPressed:
-				if (evento_atual.key.code == sf::Keyboard::Escape)
-					mostrar_menu();
-				break;
-
-			case sf::Event::MouseButtonPressed:
-				if (evento_atual.mouseButton.button == sf::Mouse::Left && feitico::lancado == false)
-				{
-					varinha::_estado_varinha = varinha::Bombarda;
-					feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
-				}
-
-				if (evento_atual.mouseButton.button == sf::Mouse::Right && feitico::lancado == false)
-				{
-					varinha::_estado_varinha = varinha::Accio;
-					feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
-				}
-				break;		
-
-			case sf::Event::MouseButtonReleased:
-				varinha::_estado_varinha = varinha::Rotacionando;
-				break;
-
-			default:
-				break;
+				varinha::_estado_varinha = varinha::Bombarda;
+				feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
 			}
+			if (evento_atual.mouseButton.button == sf::Mouse::Right && feitico::lancado == false)
+			{
+				varinha::_estado_varinha = varinha::Accio;
+				feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
+			}
+			if (evento_atual.mouseButton.button == sf::Mouse::Left)
+				if (botao_pausar.getGlobalBounds().contains(sf::Mouse::getPosition(janela).x, sf::Mouse::getPosition(janela).y))
+				{
+					mostrar_menu();
+				}
+			if (evento_atual.mouseButton.button == sf::Mouse::Left)
+				if (botao_sair.getGlobalBounds().contains(sf::Mouse::getPosition(janela).x, sf::Mouse::getPosition(janela).y))
+				{
+					estado_jogo = jogo::Saindo;
+				}
+			break;
+		case sf::Event::MouseButtonReleased:
+			varinha::_estado_varinha = varinha::Rotacionando;
+			break;
+		default:
+			break;
 		}
-		break;
 	}
+	break;
 	}
 }
 
@@ -138,7 +195,7 @@ void jogo::mostrar_tela_inicial()
 	estado_jogo = jogo::Mostrando_Menu;
 }
 
-void jogo::mostrar_ganhou(varinha *hook)
+void jogo::mostrar_ganhou(varinha *hook, sf::Clock & clock)
 {
 	Ganhou ganhou;
 	Ganhou::ganhou resultado = ganhou.Mostrar(janela);
@@ -148,12 +205,12 @@ void jogo::mostrar_ganhou(varinha *hook)
 		estado_jogo = jogo::Saindo;
 		break;
 	case Ganhou::Jogar_Novamente:
-		jogo::JogarNovamente(hook);
+		jogo::JogarNovamente(hook, clock);
 		break;
 	}
 }
 
-void jogo::mostrar_perdeu(varinha *hook)
+void jogo::mostrar_perdeu(varinha *hook, sf::Clock & clock)
 {
 	Perdeu perdeu;
 	Perdeu::perdeu resultado = perdeu.Mostrar(janela);
@@ -163,7 +220,7 @@ void jogo::mostrar_perdeu(varinha *hook)
 		estado_jogo = jogo::Saindo;
 		break;
 	case Perdeu::Jogar_Novamente:
-		jogo::JogarNovamente(hook);
+		jogo::JogarNovamente(hook, clock);
 		break;
 	}
 }
@@ -185,134 +242,13 @@ void jogo::mostrar_menu()
 	}
 }
 
+void jogo::mostrar_transicao()
+{
+}
+
 int main(int argc, char** argv)
 {
 	jogo::CriandoTudo();
 
 	return 0;
 }
-
-//int main()
-//{
-//	// number of boulders in the game
-//	int itens = 20, i;
-//	for (i = 1; i <= itens; i++) {
-//		// creating the boulders
-//		item = _root.attachMovie("boulder", "boulder_" + _root.getNextHighestDepth(), _root.getNextHighestDepth());
-//		// placing them in random positions and with random dimensions
-//		item._x = Math.floor(Math.random() * 400) + 50;
-//		item._y = Math.floor(Math.random() * 200) + 150;
-//		item._width = Math.floor(Math.random() * 30) + 20;
-//		item._height = item._width;
-//		// setting picked attribute as false
-//		// picked = false => the boulder has not been picked by the hook
-//		// picked = true => the boulder has been picked
-//		item.picked = false;
-//		// function to be executed at every frame for the boulder
-//		item.onEnterFrame = function() {
-//			// if it's not been picked...
-//			if (!this.picked) {
-//				// check if the hook is in shoot mode and touched the boulder
-//				// you'll see later what do hot_spot_x and hot_spot_y mean
-//				if (pod_status == "Lançou" and this.hitTest(hot_spot_x, hot_spot_y, true)) {
-//					// set the hook on rewind mode
-//					pod_status = "Voltando";
-//					// mark this boulder as picked
-//					this.picked = true;
-//					// determining the slowdown according to boulder size
-//					slowdown = Math.floor(this._width / 5);
-//				}
-//			}
-//			else {
-//				// the boulder has been picked, so move it as the hook moves
-//				this._x = hot_spot_x;
-//				this._y = hot_spot_y;
-//				// if the hook status changed to rotate
-//				// (this means: if the hook took a boulder and pulled it out to surface...
-//				if (pod_status == "rotate") {
-//					// remove the boulder
-//					this.removeMovieClip();
-//				}
-//			}
-//		};
-//	}
-//	// placing the hook on stage
-//	_root.attachMovie("pod", "pod", _root.getNextHighestDepth(), { _x:250 });
-//	// creating an empty movie clip to draw the rope
-//	_root.createEmptyMovieClip("rod", _root.getNextHighestDepth());
-//	// this is the rotation direction and speed
-//	rotation_dir = 2;
-//	// hook initial status
-//	pod_status = "rotate";
-//	// slowdown malus
-//	slowdown = 0;
-//	// function the hook will execute at every frame
-//	pod.onEnterFrame = function() {
-//		// getting pod status
-//		switch (pod_status) {
-//		case "rotate":
-//			// if the status is rotate, just rotate the hook according to rotation_dir
-//			this._rotation += rotation_dir;
-//			if (this._rotation == 80 or this._rotation == -80) {
-//				// invert rotation_dir if the hook reaches its minimum (or maximum) rotation allowed
-//				rotation_dir *= -1;
-//			}
-//			break;
-//		case "shoot":
-//			// the hook has ben shoot
-//			// (re)set slowdown malus to zero
-//			slowdown = 0;
-//			// moving the hook using trigonometry
-//			this._x += 10 * Math.cos(dir);
-//			this._y += 10 * Math.sin(dir);
-//			// determining the hot spot of the hook
-//			// the hot spot is the lowest corner of the hook (that acts like an harpoon in this case)
-//			hot_spot_x = this._x + 40 * Math.cos(dir);
-//			hot_spot_y = this._y + 40 * Math.sin(dir);
-//			// if the hot spot goes off the stage
-//			if (hot_spot_y>400 or hot_spot_x<0 or hot_spot_x>500) {
-//				// then rewind the hook
-//				pod_status = "rewind";
-//			}
-//			// draw a line from the hook starting position to its actual position 
-//			// this will simulate the rope
-//			rod.clear();
-//			rod.lineStyle(1, 0x000000);
-//			rod.moveTo(250, 0);
-//			rod.lineTo(this._x, this._y);
-//			break;
-//		case "rewind":
-//			// rewinding the hook...
-//			// it may seem a nonsense determining the hot spot now, but I need id
-//			// to move the boulder (if I have any boulder attached to the hook)
-//			hot_spot_x = this._x + 40 * Math.cos(dir);
-//			hot_spot_y = this._y + 40 * Math.sin(dir);
-//			// moving the hook with slowdown malus (if any)
-//			this._x -= (10 - slowdown)*Math.cos(dir);
-//			this._y -= (10 - slowdown)*Math.sin(dir);
-//			// if the hook returns in its initial position...
-//			if (this._y<0) {
-//				// then reset its position and set its status to rotate
-//				this._y = 0;
-//				this._x = 250;
-//				pod_status = "rotate";
-//			}
-//			// drawing a line as seen in shoot status
-//			rod.clear();
-//			rod.lineStyle(1, 0x000000);
-//			rod.moveTo(250, 0);
-//			rod.lineTo(this._x, this._y);
-//			break;
-//		}
-//	};
-//	// when the mouse is clicked...
-//	_root.onMouseDown = function() {
-//		// if the status is rotate...
-//		if (pod_status == "rotate") {
-//			// save hook heading and convert it to radians
-//			dir = (pod._rotation + 90)*0.0174532925;
-//			// set pod status to shoot
-//			pod_status = "shoot";
-//		}
-//	};
-//}

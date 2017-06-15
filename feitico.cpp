@@ -27,7 +27,7 @@ void feitico::Update(float elapsedTime)
 
 void feitico::bombarda()
 {
-	_imagem.loadFromFile("imagens/explosao.png");
+	_imagem.loadFromFile("imagens/bombarda.png");
 	_sprite.setTexture(_imagem);
 	_sprite.setPosition(10 * cos(dir) + 510,10 * sin(dir) + 117);
 }
