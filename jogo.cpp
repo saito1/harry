@@ -4,7 +4,7 @@
 jogo::GameState jogo::estado_jogo = Inicializado;
 sf::RenderWindow jogo::janela;
 sf::Sprite jogo::background;
-bool jogo::selecionado = false;
+bool feitico::lancado = false;
 gerenciador_itens jogo::_gerenciador_itens;
 varinha::estado_varinha varinha::_estado_varinha = Rotacionando;
 float feitico::dir = 0;
@@ -105,18 +105,18 @@ void jogo::loop_jogo(varinha* hook)
 				break;
 
 			case sf::Event::MouseButtonPressed:
-				if (evento_atual.mouseButton.button == sf::Mouse::Left)
+				if (evento_atual.mouseButton.button == sf::Mouse::Left && feitico::lancado == false)
 				{
-					varinha::_estado_varinha = varinha::Atirando;
+					varinha::_estado_varinha = varinha::Bombarda;
 					feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
 				}
-					
-				if (evento_atual.mouseButton.button == sf::Mouse::Right)
+
+				if (evento_atual.mouseButton.button == sf::Mouse::Right && feitico::lancado == false)
 				{
-					varinha::_estado_varinha = varinha::Puxando;
+					varinha::_estado_varinha = varinha::Accio;
 					feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
 				}
-				break;
+				break;		
 
 			case sf::Event::MouseButtonReleased:
 				varinha::_estado_varinha = varinha::Rotacionando;

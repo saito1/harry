@@ -2,8 +2,8 @@
 
 feitico::feitico() :_velocity(100.f), _elapsedTimeSinceStart(0.0f)
 {
+	existe_feitico = false;
 }
-
 
 feitico::~feitico()
 {
@@ -15,10 +15,12 @@ void feitico::Update(float elapsedTime)
 
 	float moveAmount = _velocity * elapsedTime;
 
-	cout << "teste:" << moveAmount << endl;
+	float moveByX = (10 * cos(dir)) * moveAmount;
+	float moveByY =  (10 * sin(dir)) * moveAmount;
 
-	float moveByX = cos(dir) * moveAmount;
-	float moveByY = sin(dir) * moveAmount;
+	if (_sprite.getPosition().x + moveByX <= 0 + (_sprite.getLocalBounds().width) / 2 || _sprite.getPosition().x + (_sprite.getLocalBounds().height) / 2 + moveByX >= 1024
+		|| _sprite.getPosition().y + moveByY <= 0 + (_sprite.getLocalBounds().height) / 2 || _sprite.getPosition().y + (_sprite.getLocalBounds().width) / 2 + moveByY >= 768)
+		lancado = false;
 
 	_sprite.move(moveByX, moveByY);
 }
@@ -27,7 +29,7 @@ void feitico::bombarda()
 {
 	_imagem.loadFromFile("imagens/explosao.png");
 	_sprite.setTexture(_imagem);
-	_sprite.setPosition(10 * cos(dir) + 510, 10 * sin(dir) + 117);
+	_sprite.setPosition(10 * cos(dir) + 510,10 * sin(dir) + 117);
 }
 
 void feitico::accio()
@@ -44,21 +46,33 @@ void feitico::desenhar(sf::RenderWindow & window)
 
 void feitico::set_posicao()
 {
-	_sprite.setPosition(_sprite.getPosition().x + 40 * cos(dir), _sprite.getPosition().y + 40 * sin(dir));
+	_sprite.setPosition(_sprite.getPosition().x + 2 * cos(dir), _sprite.getPosition().y + 2 * sin(dir));
 }
 
-float feitico::LinearVelocityX(float angle)
+void feitico::set_estado()
 {
-	angle -= 90;
-	if (angle < 0) angle = 360 + angle;
-	return (float)std::cos(angle * (3.1415926 / 180.0f));
+	lancado = true;
 }
 
-float feitico::LinearVelocityY(float angle)
+void feitico::set_estado_false()
 {
-	angle -= 90;
-	if (angle < 0) angle = 360 + angle;
-	return (float)std::sin(angle * (3.1415926 / 180.0f));
+	lancado = false;
 }
+
+bool feitico::verifica_estado()
+{
+	return existe_feitico;
+}
+
+float feitico::get_x()
+{
+	return _sprite.getPosition().x;
+}
+
+float feitico::get_y()
+{
+	return _sprite.getPosition().y;
+}
+
 
 

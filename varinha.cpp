@@ -2,7 +2,7 @@
 
 varinha::varinha(): _velocity(20.f), _elapsedTimeSinceStart(0.0f)
 {
-	direcao_rotacao = 0.5;
+	direcao_rotacao = 0.25;
 }
 
 varinha::~varinha()
@@ -12,7 +12,7 @@ varinha::~varinha()
 void varinha::update()
 {
 	_sprite.setRotation(_sprite.getRotation() + direcao_rotacao);
-	if (_sprite.getRotation() == 80 || _sprite.getRotation() == 300)
+	if (_sprite.getRotation() == 70 || _sprite.getRotation() == 290)
 	{
 		direcao_rotacao = - direcao_rotacao;
 	}
@@ -28,30 +28,27 @@ void varinha::desenhar(sf::RenderWindow& renderWindow)
 {
 	_imagem.loadFromFile("imagens/varinha.png");
 	_sprite.setTexture(_imagem);
-	_sprite.setPosition(515, 111);
+	_sprite.setPosition(524, 115);
+	_sprite.setOrigin(8, 8);
 
 	switch (_estado_varinha)
 	{
 	case varinha::Rotacionando:
 		update();
 		break;
-	case varinha::Atirando:
+	case varinha::Bombarda:
 		_feitico.bombarda();
-		//_feitico.loadFromFile("imagens/explosao.png");
-		//feitico.setTexture(_feitico);
-		//feitico.setPosition(10 * cos(dir) + 510, 10 * sin(dir) + 117);
+		_feitico.set_estado();
 		_estado_varinha = varinha::Feitico_lancado;
 		break;
-	case varinha::Puxando:
+	case varinha::Accio:
 		_feitico.accio();
-		//_feitico.loadFromFile("imagens/accio.png");
-		//feitico.setTexture(_feitico);
-		//feitico.setPosition(10 * cos(dir) + 510, 10 * sin(dir) + 117);
+		_feitico.set_estado();
 		_estado_varinha = varinha::Feitico_lancado;
 		break;
 	case varinha::Feitico_lancado:
 		_feitico.set_posicao();
-		//feitico.setPosition(feitico.getPosition().x + 40 * cos(dir), feitico.getPosition().y + 40 * sin(dir));
+		_estado_varinha = varinha::Rotacionando;
 		break;
 	default:
 		break;
@@ -59,7 +56,6 @@ void varinha::desenhar(sf::RenderWindow& renderWindow)
 
 	renderWindow.draw(_sprite);
 	_feitico.desenhar(renderWindow);
-	//renderWindow.draw(feitico);
 }
 
 float varinha::get_rotacao() const
