@@ -20,16 +20,16 @@ public:
 	void ExibeLista();
 	void Insere(Nodetype *x);
 	void InsereADireita(Nodetype *x);
-	void ProcuraRemove(int x, bool DeuCerto); //DEPOIS PARAMETRO DE BUSCA SERA ALTERADO
+	void ProcuraRemove(int x, bool &DeuCerto); 
+	void ProcuraRemove(string x, bool &DeuCerto);
 
 	Nodetype* PegaElementoAleatorio() const; // pega um elemento na lista aleatorio
 	Nodetype* PegaElementoN(int n) const; // pega o N-esimo elemento da lista
 	int QuantidadeElementos() const; // conta a quantidade de elementos da lista
 
-
 private:
 	Nodetype *P;
-	void Remove(Nodetype *Premove, bool DeuCerto); // metodo privado pois quem deve ser chamado eh o procura remove
+	void Remove(Nodetype *Premove, bool &DeuCerto); // metodo privado pois quem deve ser chamado eh o procura remove
 };
 
 
@@ -58,7 +58,8 @@ void ListaSimples::ExibeLista(){
 	Paux = P;
 	while(Paux!=NULL){
 		cout<<"ID: "<<Paux->get_id();
-		cout<<"  e  Info: " <<Paux->get_info() << endl;
+		cout << " ,Info: " << Paux->get_info();
+		cout << " e Tipo: " << Paux->get_tipo() << endl;
 		Paux = Paux->get_next();
 	}
 
@@ -84,12 +85,13 @@ void ListaSimples::InsereADireita(Nodetype *x){
 	Paux->set_next(Paux2);
 }
 
-void ListaSimples::ProcuraRemove(int x, bool DeuCerto){
+void ListaSimples::ProcuraRemove(int x, bool &DeuCerto){
 	Nodetype *Paux;
 	if(Vazia()){
 		DeuCerto = false;
 	}
 	else if(P->get_id()==x){
+		DeuCerto = true;
 		Paux = P;
 		P = P->get_next();
 		delete Paux;
@@ -105,13 +107,36 @@ void ListaSimples::ProcuraRemove(int x, bool DeuCerto){
 	}
 }
 
-void ListaSimples::Remove(Nodetype *Premove, bool DeuCerto){
+inline void ListaSimples::ProcuraRemove(string x, bool & DeuCerto)
+{
+	Nodetype *Paux;
+	if (Vazia()) {
+		DeuCerto = false;
+	}
+	else if (P->get_info() == x) {
+		DeuCerto = true;
+		Paux = P;
+		P = P->get_next();
+		delete Paux;
+	}
+	else {
+		Paux = P;
+		while ((Paux->get_next()->get_info() != x) && (Paux->get_next() != NULL)) {
+			Paux = Paux->get_next();
+		}
+		if (Paux->get_next() != NULL) {
+			Remove(Paux, DeuCerto);
+		}
+	}
+}
+
+void ListaSimples::Remove(Nodetype *Premove, bool &DeuCerto){
 	Nodetype *Paux2;
+	DeuCerto = true;
 	Paux2 = Premove;
 	Premove = Premove->get_next();
 	Paux2->set_next(Paux2->get_next()->get_next());
 	delete Premove;
-	DeuCerto = true;
 }
 
 int ListaSimples::QuantidadeElementos() const {
@@ -125,7 +150,6 @@ int ListaSimples::QuantidadeElementos() const {
 
 	return q;
 }
-
 
 Nodetype* ListaSimples::PegaElementoAleatorio() const{
 

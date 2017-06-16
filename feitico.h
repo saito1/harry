@@ -12,11 +12,14 @@ public:
 
 	virtual void bombarda();
 	virtual void accio();
+	virtual void nada();
 	virtual void desenhar(sf::RenderWindow& window);
 	virtual void set_posicao();
 	virtual void set_estado();
 	virtual void set_estado_false();
 	virtual bool verifica_estado();
+
+	virtual sf::Rect<float> get_bounding_rect();
 
 	virtual float get_x();
 	virtual float get_y();

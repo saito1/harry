@@ -2,7 +2,7 @@
 
 varinha::varinha(): _velocity(20.f), _elapsedTimeSinceStart(0.0f)
 {
-	direcao_rotacao = 0.25;
+	direcao_rotacao = 0.5;
 }
 
 varinha::~varinha()
@@ -39,17 +39,24 @@ void varinha::desenhar(sf::RenderWindow& renderWindow)
 	case varinha::Bombarda:
 		_feitico.bombarda();
 		_feitico.set_estado();
-		_estado_varinha = varinha::Feitico_lancado;
+		_estado_varinha = varinha::Bombarda_Lancada;
 		break;
 	case varinha::Accio:
 		_feitico.accio();
 		_feitico.set_estado();
-		_estado_varinha = varinha::Feitico_lancado;
+		_estado_varinha = varinha::Accio_Lancado;
 		break;
-	case varinha::Feitico_lancado:
+	case varinha::Bombarda_Lancada:
 		_feitico.set_posicao();
 		_estado_varinha = varinha::Rotacionando;
 		break;
+	case varinha::Accio_Lancado:
+		_feitico.set_posicao();
+		_estado_varinha = varinha::Rotacionando;
+		break;
+	case varinha::Acertou:
+		_feitico.nada();
+		_estado_varinha = varinha::Rotacionando;
 	default:
 		break;
 	}

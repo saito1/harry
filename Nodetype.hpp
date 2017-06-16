@@ -1,17 +1,30 @@
 #ifndef NODETYPE_HPP
 #define NODETYPE_HPP
 
-#include <iostream>
-#include <string>
-using namespace std;
-// Nó - Representa um elemento da lista
+#include "headers.h"
 
+// Nó - Representa um elemento da lista
 
 class Nodetype
 {
 public:
+	//CONSTRUTOR
 	Nodetype();
+
+	//DESTRUTOR
 	~Nodetype();
+
+	//FUNCOES
+	virtual void carregar(std::string nomearquivo);
+	virtual void desenhar(sf::RenderWindow& renderWindow);
+	virtual bool colidiu(feitico& _feitico);
+
+	virtual float get_x() const;
+	virtual float get_y() const;
+
+	virtual void set_posicao(float x, float y);
+
+	virtual sf::Rect<float> get_bounding_rect();
 
 	Nodetype* get_next() const;
 	void set_next(Nodetype *);
@@ -21,13 +34,22 @@ public:
 	void set_id(int);
 	void ExibeInformacoes() const;
 	void CopiaNode(Nodetype *original);
+	void set_tipo(int);
+	int get_tipo() const;
+	void set_valor(int);
+	int get_valor() const;
+
+	sf::Sprite _sprite;
 
 private:
+	int tipo; //1 - INIMIGO, 2 - AMIGO, 3 - HORCRUX, 4 - PEGAR
 	Nodetype *next;
 	int id;
+	int valor;
 	string info;
-	//int x; //IMPLEMENTAR QUANDO FIZER INTEGRACAO
-	//int y;
+	bool carregou;
+	sf::Texture _imagem;
+	std::string nome_arquivo;
 };
 
 
@@ -35,12 +57,68 @@ Nodetype::Nodetype(){
 	next = NULL;
 	id = 0;
 	info = "vazia";
+	tipo = 0;
+	valor = 0;
 }
 
 Nodetype::~Nodetype(){
 	cout << "GAME OVER NO DESTRUTOR DO ID = " << get_id() <<endl;
 }
 
+inline void Nodetype::carregar(std::string nomearquivo)
+{
+	if (_imagem.loadFromFile(nomearquivo) == false)
+	{
+		nome_arquivo = "";
+		carregou = false;
+	}
+	else
+	{
+		nome_arquivo = nomearquivo;
+		_sprite.setTexture(_imagem);
+		carregou = true;
+	}
+}
+
+inline void Nodetype::desenhar(sf::RenderWindow & renderWindow)
+{
+	if (carregou)
+		renderWindow.draw(_sprite);
+}
+
+inline bool Nodetype::colidiu(feitico& _feitico)
+{
+	if (_sprite.getPosition().x >= _feitico.get_bounding_rect().left
+		&& _sprite.getPosition().x <= _feitico.get_bounding_rect().left + _feitico.get_bounding_rect().width
+		&& _sprite.getPosition().y >= _feitico.get_bounding_rect().top
+		&& _sprite.getPosition().y <= _feitico.get_bounding_rect().top + _feitico.get_bounding_rect().height)
+		return true;
+	else
+		return false;
+}
+
+inline float Nodetype::get_x() const
+{
+	return _sprite.getPosition().x;
+}
+
+inline float Nodetype::get_y() const
+{
+	return _sprite.getPosition().y;
+}
+
+inline void Nodetype::set_posicao(float x, float y)
+{
+	if (carregou)
+		_sprite.setPosition(x, y);
+}
+
+inline sf::Rect<float> Nodetype::get_bounding_rect()
+{
+	sf::Vector2f position = _sprite.getPosition();
+
+	return sf::Rect<float>(position.x - _sprite.getGlobalBounds().width / 2, position.y - _sprite.getGlobalBounds().height / 2, _sprite.getGlobalBounds().width, _sprite.getGlobalBounds().height);
+}
 
 Nodetype* Nodetype::get_next() const{
 	return this->next;
@@ -67,12 +145,36 @@ void Nodetype::ExibeInformacoes() const{
 	cout << "ID = " << get_id() << endl;
 	cout << "INFO = " << get_info() << endl;
 	cout << "NEXT = " << get_next() << endl;
+	cout << "TIPO = " << get_tipo() << endl;
+	cout << "VALOR = " << get_valor() << endl;
 }
 
 void Nodetype::CopiaNode(Nodetype *original){
 	set_next(original->get_next());
 	set_id(original->get_id());
 	set_info(original->get_info());
+	set_tipo(original->get_tipo());
+	set_valor(original->get_valor());
+}
+
+inline void Nodetype::set_tipo(int _tipo)
+{
+	this->tipo = _tipo;
+}
+
+inline int Nodetype::get_tipo() const
+{
+	return this->tipo;
+}
+
+inline void Nodetype::set_valor(int _valor)
+{
+	this->valor = _valor;
+}
+
+inline int Nodetype::get_valor() const
+{
+	return this->valor;
 }
 
 #endif

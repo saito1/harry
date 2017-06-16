@@ -12,13 +12,15 @@
 #include <iomanip>
 #include <locale>
 
-#include "item.h"
+//#include "item.h"
 #include "menu.h"
 #include "tela_inicial.h"
 #include "ganhou.h"
 #include "perdeu.h"
 #include "varinha.h"
-#include "gerenciador_itens.h"
+//#include "gerenciador_itens.h"
 #include "feitico.h"
+//#include "ListaSimples.hpp"
+//#include "Nodetype.hpp"
 
 using namespace std;

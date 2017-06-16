@@ -1,12 +1,13 @@
 #include "headers.h"
 
-feitico::feitico() :_velocity(100.f), _elapsedTimeSinceStart(0.0f)
+feitico::feitico() :_velocity(50.f), _elapsedTimeSinceStart(0.0f)
 {
-	existe_feitico = false;
+	existe_feitico = true;
 }
 
 feitico::~feitico()
 {
+	existe_feitico = false;
 }
 
 void feitico::Update(float elapsedTime)
@@ -27,16 +28,27 @@ void feitico::Update(float elapsedTime)
 
 void feitico::bombarda()
 {
-	_imagem.loadFromFile("imagens/bombarda.png");
-	_sprite.setTexture(_imagem);
-	_sprite.setPosition(10 * cos(dir) + 510,10 * sin(dir) + 117);
+	if (existe_feitico)
+	{
+		_imagem.loadFromFile("imagens/bombarda.png");
+		_sprite.setTexture(_imagem);
+		_sprite.setPosition(10 * cos(dir) + 510, 10 * sin(dir) + 117);
+	}
 }
 
 void feitico::accio()
 {
-	_imagem.loadFromFile("imagens/accio.png");
-	_sprite.setTexture(_imagem);
-	_sprite.setPosition(10 * cos(dir) + 510,10 * sin(dir) + 117);
+	if (existe_feitico)
+	{
+		_imagem.loadFromFile("imagens/accio.png");
+		_sprite.setTexture(_imagem);
+		_sprite.setPosition(10 * cos(dir) + 510, 10 * sin(dir) + 117);
+	}
+}
+
+void feitico::nada()
+{
+	_sprite.setPosition(1024,768);
 }
 
 void feitico::desenhar(sf::RenderWindow & window)
@@ -62,6 +74,13 @@ void feitico::set_estado_false()
 bool feitico::verifica_estado()
 {
 	return existe_feitico;
+}
+
+sf::Rect<float> feitico::get_bounding_rect()
+{
+	sf::Vector2f position = _sprite.getPosition();
+
+	return sf::Rect<float>(position.x - _sprite.getGlobalBounds().width / 2, position.y - _sprite.getGlobalBounds().height / 2, _sprite.getGlobalBounds().width, _sprite.getGlobalBounds().height);
 }
 
 float feitico::get_x()

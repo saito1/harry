@@ -16,7 +16,7 @@ public:
 	void update();
 
 	enum estado_varinha {
-		Rotacionando, Bombarda, Accio, Feitico_lancado, Acertou
+		Rotacionando, Bombarda, Accio, Accio_Lancado, Bombarda_Lancada, Acertou
 	}; // estado que o jogo pode estar durante a partida
 
 	virtual void desenhar(sf::RenderWindow& window);
