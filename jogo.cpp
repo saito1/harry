@@ -60,7 +60,7 @@ void jogo::CriandoTudo()
 	totalFont.loadFromFile("imagens/harry.ttf");
 
 	//LOAD FONT AND TEXT
-	totalText.setFont(timerFont);
+	totalText.setFont(totalFont);
 	totalText.setString(to_string(total));
 	totalText.setPosition(50, 22);
 	totalText.setCharacterSize(25);
@@ -83,42 +83,42 @@ void jogo::CriandoTudo()
 	anel->set_tipo(3);
 	anel->set_valor(1000);
 	todosItens.Insere(anel);
-	itensGanhar.Insere(anel);
+	//itensGanhar.Insere(anel);
 
 	taca->set_id(2);
 	taca->set_info("imagens/taca.png");
 	taca->set_tipo(3);
 	taca->set_valor(1000);
 	todosItens.Insere(taca);
-	itensGanhar.Insere(taca);
+	//itensGanhar.Insere(taca);
 
 	medalhao->set_id(3);
 	medalhao->set_info("imagens/medalhao.png");
 	medalhao->set_tipo(3);
 	medalhao->set_valor(1000);
 	todosItens.Insere(medalhao);
-	itensGanhar.Insere(medalhao);
+//	itensGanhar.Insere(medalhao);
 
 	diadema->set_id(4);
 	diadema->set_info("imagens/diadema.png");
 	diadema->set_tipo(3);
 	diadema->set_valor(1000);
 	todosItens.Insere(diadema);
-	itensGanhar.Insere(diadema);
+	//itensGanhar.Insere(diadema);
 
 	diario->set_id(5);
 	diario->set_info("imagens/diario.png");
 	diario->set_tipo(3);
 	diario->set_valor(1000);
 	todosItens.Insere(diario);
-	itensGanhar.Insere(diario);
+//	itensGanhar.Insere(diario);
 
 	nagini->set_id(6);
 	nagini->set_info("imagens/nagini.png");
 	nagini->set_tipo(3);
 	nagini->set_valor(1000);
 	todosItens.Insere(nagini);
-	itensGanhar.Insere(nagini);
+//	itensGanhar.Insere(nagini);
 
 	dementador->set_id(7);
 	dementador->set_info("imagens/dementador.png");
@@ -233,7 +233,7 @@ void jogo::CriandoTudo()
 	bellatrix->set_tipo(1);
 	bellatrix->set_valor(250);
 	todosItens.Insere(bellatrix);
-
+	
 	voldemort->set_id(26);
 	voldemort->set_info("imagens/voldemort.png");
 	voldemort->set_tipo(1);
@@ -320,7 +320,6 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
 
 		verifica_colisao(hook, plano, itensGanhar);
 		janela.clear();
-		janela.draw(timerText);
 		janela.draw(background);
 		hook->desenhar(janela);
 		hook->update_todos();
@@ -477,7 +476,7 @@ void jogo::verifica_colisao(varinha* hook, ListaSimples * plano, ListaSimples * 
 				else
 				{
 					total += Paux->get_valor();
-					itensGanhar->ProcuraRemove(Paux->get_info(), ok);
+				//	itensGanhar->ProcuraRemove(Paux->get_info(), ok);
 				}
 				break;
 			case 4:
@@ -490,6 +489,7 @@ void jogo::verifica_colisao(varinha* hook, ListaSimples * plano, ListaSimples * 
 			feitico::lancado = false;
 			varinha::_estado_varinha = varinha::Acertou;
 			plano->ProcuraRemove(Paux->get_id(), ok);
+			totalText.setString(to_string(total));
 		}
 		Paux = Paux->get_next();
 	}
