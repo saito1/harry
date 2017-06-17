@@ -38,5 +38,6 @@ private:
 	static int countdown;
 	static int total;
 	//static int meta;
+    static bool VerificaGanhou(ListaSimples *itensGanhar);
 };
 #endif // !JOGO_H
