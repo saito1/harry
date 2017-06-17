@@ -24,6 +24,7 @@ public:
 	void ProcuraRemove(string x, bool &DeuCerto);
 
 	Nodetype* PegaElementoAleatorio() const; // pega um elemento na lista aleatorio
+    Nodetype* PegaElementoAleatorioTodosTipoX(int x) const; // pega um elemento aleatorio do tipo X
 	Nodetype* PegaElementoN(int n) const; // pega o N-esimo elemento da lista
 	int QuantidadeElementos() const; // conta a quantidade de elementos da lista
 
@@ -165,6 +166,43 @@ Nodetype* ListaSimples::PegaElementoAleatorio() const{
 	}
 
 	return Paux;
+}
+
+
+Nodetype* ListaSimples::PegaElementoAleatorioTodosTipoX(int x) const{
+    
+    Nodetype *Paux;
+    Paux = P;
+    int r,i;
+    
+    switch (x) {
+        case 1:
+            r = (rand() % 7 + 6);
+            break;
+        case 2:
+            r = (rand() % 7 + 13);
+            break;
+        case 3:
+             r = (rand() % 6);
+            break;
+        case 4:
+            r = (rand() % 6 + 20);
+            break;
+            
+        case 5:
+            r = (rand() % (QuantidadeElementos()-6) + 6);
+            break;
+        default:
+            r = 0; // should never happen
+            break;
+    }
+    
+
+    for(i=1;i<r;i++){
+        Paux = Paux->get_next();
+    }
+    
+    return Paux;
 }
 
 Nodetype* ListaSimples::PegaElementoN(int n) const{
