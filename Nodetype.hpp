@@ -23,6 +23,7 @@ public:
 	virtual float get_y() const;
 
 	virtual void set_posicao(float x, float y);
+	virtual void set_origem(float x, float y);
 
 	virtual sf::Rect<float> get_bounding_rect();
 
@@ -88,13 +89,23 @@ inline void Nodetype::desenhar(sf::RenderWindow & renderWindow)
 
 inline bool Nodetype::colidiu(feitico& _feitico)
 {
-	if (_sprite.getPosition().x >= _feitico.get_bounding_rect().left
-		&& _sprite.getPosition().x <= _feitico.get_bounding_rect().left + _feitico.get_bounding_rect().width
-		&& _sprite.getPosition().y >= _feitico.get_bounding_rect().top
-		&& _sprite.getPosition().y <= _feitico.get_bounding_rect().top + _feitico.get_bounding_rect().height)
-		return true;
-	else
-		return false;
+	if (_feitico.lancado == true)
+	{
+		if(_sprite.getPosition().x - _sprite.getLocalBounds().width/2 <= _feitico.get_bounding_rect().left + _feitico.get_bounding_rect().width
+			&& _sprite.getPosition().x + _sprite.getLocalBounds().width / 2  >= _feitico.get_bounding_rect().left 
+			&& _sprite.getPosition().y - _sprite.getLocalBounds().height / 2 <= _feitico.get_bounding_rect().top + _feitico.get_bounding_rect().height
+			&& _sprite.getPosition().y + _sprite.getLocalBounds().height / 2 >= _feitico.get_bounding_rect().top )
+		{
+			cout << _sprite.getLocalBounds().left << "<=" << _feitico.get_bounding_rect().left << endl;
+			cout << _sprite.getLocalBounds().left + _sprite.getLocalBounds().width << ">=" << _feitico.get_bounding_rect().left << endl;
+			cout << _sprite.getLocalBounds().top << "<=" << _feitico.get_bounding_rect().top << endl;
+			cout << _sprite.getLocalBounds().top << "<=" << _feitico.get_bounding_rect().top + _feitico.get_bounding_rect().height << endl;
+			cout << get_info() << endl;
+			cout << "colidiu" << endl;
+			return true;
+		}
+	}
+	return false;
 }
 
 inline float Nodetype::get_x() const
@@ -111,6 +122,11 @@ inline void Nodetype::set_posicao(float x, float y)
 {
 	if (carregou)
 		_sprite.setPosition(x, y);
+}
+
+inline void Nodetype::set_origem(float x, float y)
+{
+	_sprite.setOrigin(x, y);
 }
 
 inline sf::Rect<float> Nodetype::get_bounding_rect()

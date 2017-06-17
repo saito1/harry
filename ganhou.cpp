@@ -11,18 +11,18 @@ Ganhou::ganhou Ganhou::Mostrar(sf::RenderWindow & renderWindow)
 
 	//Coordenadas do botao JOGAR
 	item_ganhou botao_jogar;
-	botao_jogar.rect.top = 500;
-	botao_jogar.rect.height = 520;
-	botao_jogar.rect.left = 100;
-	botao_jogar.rect.width = 340;
+	botao_jogar.rect.top = 610;
+	botao_jogar.rect.height = 660;
+	botao_jogar.rect.left = 685;
+	botao_jogar.rect.width = 990;
 	botao_jogar.action = Jogar_Novamente;
 
 	//Coordenadas do botao SAIR
 	item_ganhou botao_sair;
-	botao_sair.rect.top = 520;
-	botao_sair.rect.height = 580;
-	botao_sair.rect.left = 120;
-	botao_sair.rect.width = 320;
+	botao_sair.rect.top = 675;
+	botao_sair.rect.height = 725;
+	botao_sair.rect.left = 800;
+	botao_sair.rect.width = 880;
 	botao_sair.action = Sair;
 
 	itens_ganhou.push_back(botao_jogar);

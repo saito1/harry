@@ -3,6 +3,7 @@
 feitico::feitico() :_velocity(50.f), _elapsedTimeSinceStart(0.0f)
 {
 	existe_feitico = true;
+	tipo = 0;
 }
 
 feitico::~feitico()
@@ -33,6 +34,7 @@ void feitico::bombarda()
 		_imagem.loadFromFile("imagens/bombarda.png");
 		_sprite.setTexture(_imagem);
 		_sprite.setPosition(10 * cos(dir) + 510, 10 * sin(dir) + 117);
+		tipo = 1;
 	}
 }
 
@@ -43,6 +45,7 @@ void feitico::accio()
 		_imagem.loadFromFile("imagens/accio.png");
 		_sprite.setTexture(_imagem);
 		_sprite.setPosition(10 * cos(dir) + 510, 10 * sin(dir) + 117);
+		tipo = 2;
 	}
 }
 
@@ -69,11 +72,17 @@ void feitico::set_estado()
 void feitico::set_estado_false()
 {
 	lancado = false;
+	tipo = -1;
 }
 
 bool feitico::verifica_estado()
 {
 	return existe_feitico;
+}
+
+int feitico::get_tipo() const
+{
+	return tipo;
 }
 
 sf::Rect<float> feitico::get_bounding_rect()

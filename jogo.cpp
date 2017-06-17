@@ -61,8 +61,8 @@ void jogo::CriandoTudo()
 
 	//LOAD FONT AND TEXT
 	totalText.setFont(totalFont);
-	totalText.setString(to_string(total));
-	totalText.setPosition(50, 22);
+	totalText.setString("$ " + to_string(total));
+	totalText.setPosition(67, 43);
 	totalText.setCharacterSize(25);
 	totalText.setFillColor(sf::Color::Black);
 
@@ -74,7 +74,8 @@ void jogo::CriandoTudo()
 		*dementador = new Nodetype(), *diadema = new Nodetype(), *diario = new Nodetype(), *dobby = new Nodetype(), *dolores = new Nodetype(), *draco = new Nodetype(),
 		*dumbledore = new Nodetype(), *felix = new Nodetype(), *hagrid = new Nodetype(), *hermione = new Nodetype(), *livro = new Nodetype(), *lucius = new Nodetype(),
 		*medalhao = new Nodetype(), *minerva = new Nodetype(), *nagini = new Nodetype(), *pomo = new Nodetype(), *ron = new Nodetype(), *snape = new Nodetype(),
-		*taca = new Nodetype(), *voldemort = new Nodetype();
+		*taca = new Nodetype(), *voldemort = new Nodetype(), *horcrux1 = new Nodetype(), *horcrux2 = new Nodetype(), *horcrux3 = new Nodetype(), *horcrux4 = new Nodetype(), 
+		*horcrux5 = new Nodetype(), *horcrux6 = new Nodetype();
 
 	srand(time(NULL));
 
@@ -83,42 +84,45 @@ void jogo::CriandoTudo()
 	anel->set_tipo(3);
 	anel->set_valor(1000);
 	todosItens.Insere(anel);
-	//itensGanhar.Insere(anel);
+	horcrux1->CopiaNode(anel);
+	itensGanhar.Insere(horcrux1);
 
 	taca->set_id(2);
 	taca->set_info("imagens/taca.png");
 	taca->set_tipo(3);
 	taca->set_valor(1000);
 	todosItens.Insere(taca);
-	//itensGanhar.Insere(taca);
+	horcrux2->CopiaNode(taca);
+	itensGanhar.Insere(horcrux2);
 
 	medalhao->set_id(3);
 	medalhao->set_info("imagens/medalhao.png");
 	medalhao->set_tipo(3);
 	medalhao->set_valor(1000);
 	todosItens.Insere(medalhao);
-//	itensGanhar.Insere(medalhao);
+	horcrux3->CopiaNode(medalhao);
+	itensGanhar.Insere(horcrux3);
 
 	diadema->set_id(4);
 	diadema->set_info("imagens/diadema.png");
 	diadema->set_tipo(3);
 	diadema->set_valor(1000);
-	todosItens.Insere(diadema);
-	//itensGanhar.Insere(diadema);
+	horcrux4->CopiaNode(diadema);
+	itensGanhar.Insere(horcrux4);
 
 	diario->set_id(5);
 	diario->set_info("imagens/diario.png");
 	diario->set_tipo(3);
 	diario->set_valor(1000);
-	todosItens.Insere(diario);
-//	itensGanhar.Insere(diario);
+	horcrux5->CopiaNode(diario);
+	itensGanhar.Insere(horcrux5);
 
 	nagini->set_id(6);
 	nagini->set_info("imagens/nagini.png");
 	nagini->set_tipo(3);
 	nagini->set_valor(1000);
-	todosItens.Insere(nagini);
-//	itensGanhar.Insere(nagini);
+	horcrux6->CopiaNode(nagini);
+	itensGanhar.Insere(horcrux6);
 
 	dementador->set_id(7);
 	dementador->set_info("imagens/dementador.png");
@@ -426,6 +430,7 @@ void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral)
 		x = (rand() % 919);
 		y = (rand() % 300 + 321);
 		noPtr->set_posicao(x, y);
+		noPtr->set_origem(noPtr->_sprite.getLocalBounds().width/2, noPtr->_sprite.getLocalBounds().height/2);
 
 		plano->Insere(noPtr);
 	}
@@ -459,28 +464,28 @@ void jogo::verifica_colisao(varinha* hook, ListaSimples * plano, ListaSimples * 
 			switch (Paux->get_tipo())
 			{
 			case 1:
-				if (varinha::_estado_varinha == varinha::Accio_Lancado)
+				if (hook->_feitico.get_tipo() == 2)
 					total -= 200;
 				else
 					total += Paux->get_valor();
 				break;
 			case 2:
-				if (varinha::_estado_varinha == varinha::Accio_Lancado)
+				if (hook->_feitico.get_tipo() == 2)
 					total += Paux->get_valor();
 				else
 					total -= 500;
 				break;
 			case 3:
-				if (varinha::_estado_varinha == varinha::Accio_Lancado)
-					cout << "perdeu" << endl;
+				if (hook->_feitico.get_tipo() == 2)
+					estado_jogo = Perdendo;
 				else
 				{
 					total += Paux->get_valor();
-				//	itensGanhar->ProcuraRemove(Paux->get_info(), ok);
+					itensGanhar->ProcuraRemove(Paux->get_info(), ok);
 				}
 				break;
 			case 4:
-				if (varinha::_estado_varinha == varinha::Accio_Lancado)
+				if (hook->_feitico.get_tipo() == 2)
 					total += Paux->get_valor();
 				break;
 			default:

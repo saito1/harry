@@ -18,6 +18,7 @@ public:
 	virtual void set_estado();
 	virtual void set_estado_false();
 	virtual bool verifica_estado();
+	virtual int get_tipo() const;
 
 	virtual sf::Rect<float> get_bounding_rect();
 
@@ -28,6 +29,7 @@ public:
 	static bool lancado;
 
 private:
+	int tipo;
 	float _velocity;
 	float _angle;
 	float _elapsedTimeSinceStart;
