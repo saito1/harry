@@ -344,6 +344,15 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
 			case sf::Event::KeyPressed:
 				if (evento_atual.key.code == sf::Keyboard::Escape)
 					mostrar_menu();
+                else if(evento_atual.key.code == sf::Keyboard::F && feitico::lancado == false){
+                    varinha::_estado_varinha = varinha::Bombarda;
+                    feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
+                }
+                else if(evento_atual.key.code == sf::Keyboard::J && feitico::lancado == false){
+                    varinha::_estado_varinha = varinha::Accio;
+                    feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
+                }
+
 				break;
 			case sf::Event::MouseButtonPressed:
 				if (evento_atual.mouseButton.button == sf::Mouse::Left && feitico::lancado == false)
