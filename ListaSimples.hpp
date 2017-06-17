@@ -22,7 +22,9 @@ public:
 	void InsereADireita(Nodetype *x);
 	void ProcuraRemove(int x, bool &DeuCerto); 
 	void ProcuraRemove(string x, bool &DeuCerto);
-
+    void DeletaTudo();
+    
+    
 	Nodetype* PegaElementoAleatorio() const; // pega um elemento na lista aleatorio
     Nodetype* PegaElementoAleatorioTodosTipoX(int x) const; // pega um elemento aleatorio do tipo X
 	Nodetype* PegaElementoN(int n) const; // pega o N-esimo elemento da lista
@@ -138,6 +140,14 @@ void ListaSimples::Remove(Nodetype *Premove, bool &DeuCerto){
 	Premove = Premove->get_next();
 	Paux2->set_next(Paux2->get_next()->get_next());
 	delete Premove;
+}
+
+void ListaSimples::DeletaTudo(){
+    int i, n;
+    bool ok;
+    while(QuantidadeElementos()!=0){
+        ProcuraRemove(P->get_id(), ok);
+    }
 }
 
 int ListaSimples::QuantidadeElementos() const {

@@ -9,19 +9,48 @@ sf::Sprite jogo::background;
 bool feitico::lancado = false;
 varinha::estado_varinha varinha::_estado_varinha = Rotacionando;
 float feitico::dir = 0;
-int jogo::countdown = 30;
+int jogo::countdown = 59;
 int jogo::total = 0;
 
 void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ListaSimples* itensGanhar)
 {
-    if (estado_jogo != Inicializado)
-        return;
+   
+    
+    //GAME CLOCK & TOTAL
+    countdown = 59;
+    total = 0;
+    
+    //convert countdown to a string
+    string countdownString = "00:" + to_string(countdown);
+    
+    //LOAD FONT AND TEXT
+    timerText.setString(countdownString);
+    
+
+    //LOAD FONT AND TEXT
+    totalText.setString("$ " + to_string(total));
+    
+    
+    
+    //OLHAR ISSO DIREITO
+    
+    
+    
+//    //Inicializando itensGanhar
+//    InicializaItensGanhar(itensGanhar, todosItens);
+//    
+//    itensGanhar->ExibeLista();
+    //if (estado_jogo != Inicializado)
+     //   return;
     
     janela.create(sf::VideoMode(1024, 768), "HARRY", sf::Style::Close); //DEFINE TAMANHO DA JANELA, O QUE APARECE NO CABEÇALHO E FUNCOES DISPONIVEIS (FECHAR, RESIZE, MINIMIZAR)
     
     sf::Texture imagem;
     imagem.loadFromFile("imagens/fundo2.jpg");
     background.setTexture(imagem); //DEFINE O BACKGROUND
+    
+    //Resetando plano
+    plano->DeletaTudo();
     
     InsereNplano(20, plano, todosItens);
     
@@ -50,7 +79,6 @@ void jogo::CriandoTudo()
     
     //LOAD FONT AND TEXT
     timerText.setFont(timerFont);
-    timerText.setString(countdownString);
     timerText.setPosition(200, 22);
     timerText.setCharacterSize(30);
     timerText.setFillColor(sf::Color::Black);
@@ -61,7 +89,6 @@ void jogo::CriandoTudo()
     
     //LOAD FONT AND TEXT
     totalText.setFont(totalFont);
-    totalText.setString("$ " + to_string(total));
     totalText.setPosition(67, 43);
     totalText.setCharacterSize(25);
     totalText.setFillColor(sf::Color::Black);
@@ -86,7 +113,7 @@ void jogo::CriandoTudo()
     anel->set_tipo(3);
     anel->set_valor(1000);
     todosItens.Insere(anel);
-    horcrux1->CopiaNode(anel);
+    horcrux1->CopiaNode(anel);                      //DEPOIS TEM Q COMENTAR TODOS AQUI Q INICIALIZA O ITENS GANHAR
     itensGanhar.Insere(horcrux1);
     
     taca->set_id(2);
@@ -179,32 +206,32 @@ void jogo::CriandoTudo()
     dumbledore->set_tipo(2);
     dumbledore->set_valor(300);
     todosItens.Insere(dumbledore);
-   
+    
     minerva->set_id(15);
     minerva->set_info("imagens/minerva.png");
     minerva->set_tipo(2);
     minerva->set_valor(300);
     todosItens.Insere(minerva);
-   
+    
     hermione->set_id(16);
     hermione->set_info("imagens/hermione.png");
     hermione->set_tipo(2);
     hermione->set_valor(250);
     todosItens.Insere(hermione);
-   
+    
     ron->set_id(17);
     ron->set_info("imagens/ron.png");
     ron->set_tipo(2);
     ron->set_valor(250);
     todosItens.Insere(ron);
-   
+    
     
     snape->set_id(18);
     snape->set_info("imagens/snape.png");
     snape->set_tipo(2);
     snape->set_valor(200);
     todosItens.Insere(snape);
-   
+    
     
     hagrid->set_id(19);
     hagrid->set_info("imagens/hagrid.png");
@@ -256,7 +283,8 @@ void jogo::CriandoTudo()
     livro->set_tipo(4);
     livro->set_valor(10);
     todosItens.Insere(livro);
- 
+    
+    
     
     
     jogo::Start(hook, clock, &plano, &todosItens, &itensGanhar);
@@ -439,6 +467,27 @@ void jogo::mostrar_perdeu(varinha *hook, sf::Clock & clock, ListaSimples* plano,
     }
 }
 
+
+//OLHAR ISSO DIREITO
+//void jogo::InicializaItensGanhar(ListaSimples *itensGanhar, ListaSimples *listaGeral){
+//    int i, x, y;
+//    Nodetype *no;
+//    Nodetype *noPtr;
+//    
+//    
+//    cout << "agora 4 : " << listaGeral->PegaElementoN(4)->get_id() << endl;
+//    for (i = 1; i<=6; i++)
+//    {
+//        no = listaGeral->PegaElementoN(i);
+//        noPtr = new Nodetype();
+//        noPtr->CopiaNode(no);
+//        noPtr->carregar(noPtr->get_info());
+//        
+//        itensGanhar->Insere(noPtr);
+//    }
+//    
+//}
+
 void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral)
 {
     int i, x, y, qtd = 0, r;
@@ -446,10 +495,11 @@ void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral)
     Nodetype *no;
     Nodetype *noPtr;
     
-    // 20% de chance de ter 1 horcrux na fase e 80% de chance de nao ter nenhuma (pode ser alterado, apenas mudando o 5 ali)
-    r = (rand() % 5);
-    
-    if(r==1){
+    // 33% de chance de ter 1 horcrux na fase e 66% de chance de nao ter nenhuma (pode ser alterado, apenas mudando o 2 ali)
+    //r = (rand() % 2);
+    r = 0;
+    cout << "r = " << r << endl; // confirmar a frequencia que o 1 aparece
+    if(r==0){
         // Inserindo horcrux
         no = listaGeral->PegaElementoAleatorioTodosTipoX(3);
         noPtr = new Nodetype();
