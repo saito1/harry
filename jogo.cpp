@@ -308,8 +308,8 @@ void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, ListaSimples* plano,
 void jogo::nova_fase(varinha * hook, sf::Clock & clock, ListaSimples * plano, ListaSimples * todosItens, ListaSimples * itensGanhar)
 {
 	//GAME CLOCK & TOTAL
-	countdown = 30;
-	meta += 650;
+	countdown = 30 + (nivel * 5);
+	meta += 650 + (total/2);
 	nivel += 1;
 
 	//convert countdown to a string
@@ -447,6 +447,9 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
 				else
 					estado_jogo = jogo::Perdendo;
 			}
+
+			if (VerificaGanhou(itensGanhar))
+				estado_jogo = jogo::Ganhando;
 
 			verifica_colisao(hook, plano, itensGanhar);
             janela.clear();
@@ -807,7 +810,7 @@ void jogo::mostrar_menu()
 void jogo::mostrar_transicao()
 {
 	transicao_passou _transicao_passou;
-	_transicao_passou.set_meta(meta);
+	_transicao_passou.set_meta(meta + (total/2));
 	_transicao_passou.Mostrar(janela);
 	estado_jogo = jogo::Nova_Fase;
 }
