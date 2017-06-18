@@ -5,20 +5,24 @@ jogo::GameState jogo::estado_jogo = Inicializado;
 sf::RenderWindow jogo::janela;
 sf::Text jogo::timerText;
 sf::Text jogo::totalText;
+sf::Text jogo::nivelText;
+sf::Text jogo::metaText;
 sf::Sprite jogo::background;
 bool feitico::lancado = false;
 varinha::estado_varinha varinha::_estado_varinha = Rotacionando;
 float feitico::dir = 0;
-int jogo::countdown = 59;
+int jogo::countdown = 30;
 int jogo::total = 0;
+int jogo::meta = 0;
+int jogo::nivel = 1;
 
 void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ListaSimples* itensGanhar)
-{
-   
-    
+{    
     //GAME CLOCK & TOTAL
-    countdown = 59;
+    countdown = 30;
     total = 0;
+	meta = 650;
+	nivel = 1;
     
     //convert countdown to a string
     string countdownString = "00:" + to_string(countdown);
@@ -26,15 +30,16 @@ void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSim
     //LOAD FONT AND TEXT
     timerText.setString(countdownString);
     
+	//LOAD FONT AND TEXT
+	nivelText.setString(to_string(nivel));
 
     //LOAD FONT AND TEXT
     totalText.setString("$ " + to_string(total));
-    
-    
-    
+
+	//LOAD FONT AND TEXT
+	metaText.setString("$ " + to_string(meta));
+		 
     //OLHAR ISSO DIREITO
-    
-    
     
 //    //Inicializando itensGanhar
 //    InicializaItensGanhar(itensGanhar, todosItens);
@@ -68,30 +73,37 @@ void jogo::CriandoTudo()
 {
     //GAME CLOCK & TIMER
     sf::Clock clock;
-    int countdown = 30;
     
-    //LOAD GAME TIMER FONT
-    sf::Font timerFont;
-    timerFont.loadFromFile("imagens/harry.ttf");
+    //LOAD GAME FONT
+    sf::Font Font;
+    Font.loadFromFile("imagens/harry.ttf");
     
     //convert countdown to a string
     string countdownString = "00:" + to_string(countdown);
     
     //LOAD FONT AND TEXT
-    timerText.setFont(timerFont);
+    timerText.setFont(Font);
     timerText.setPosition(200, 22);
     timerText.setCharacterSize(30);
     timerText.setFillColor(sf::Color::Black);
-    
-    //LOAD GAME TOTAL FONT
-    sf::Font totalFont;
-    totalFont.loadFromFile("imagens/harry.ttf");
-    
+
     //LOAD FONT AND TEXT
-    totalText.setFont(totalFont);
+    totalText.setFont(Font);
     totalText.setPosition(67, 43);
     totalText.setCharacterSize(25);
     totalText.setFillColor(sf::Color::Black);
+
+	//LOAD FONT AND TEXT
+	metaText.setFont(Font);
+	metaText.setPosition(67, 13);
+	metaText.setCharacterSize(25);
+	metaText.setFillColor(sf::Color::Black);
+
+	//LOAD FONT AND TEXT
+	nivelText.setFont(Font);
+	nivelText.setPosition(360,40);
+	nivelText.setCharacterSize(30);
+	nivelText.setFillColor(sf::Color::Black);
     
     varinha *hook = new varinha();
     
@@ -284,9 +296,6 @@ void jogo::CriandoTudo()
     livro->set_valor(10);
     todosItens.Insere(livro);
     
-    
-    
-    
     jogo::Start(hook, clock, &plano, &todosItens, &itensGanhar);
 }
 
@@ -294,6 +303,50 @@ void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, ListaSimples* plano,
 {
     jogo::Start(hook, clock, plano, todosItens, itensGanhar);
     estado_jogo = jogo::Jogando;
+}
+
+void jogo::nova_fase(varinha * hook, sf::Clock & clock, ListaSimples * plano, ListaSimples * todosItens, ListaSimples * itensGanhar)
+{
+	//GAME CLOCK & TOTAL
+	countdown = 30;
+	meta += 650;
+	nivel += 1;
+
+	//convert countdown to a string
+	string countdownString = "00:" + to_string(countdown);
+
+	//LOAD FONT AND TEXT
+	timerText.setString(countdownString);
+
+	//LOAD FONT AND TEXT
+	nivelText.setString(to_string(nivel));
+
+	//LOAD FONT AND TEXT
+	totalText.setString("$ " + to_string(total));
+
+	//LOAD FONT AND TEXT
+	metaText.setString("$ " + to_string(meta));
+
+	//OLHAR ISSO DIREITO
+
+	//    //Inicializando itensGanhar
+	//    InicializaItensGanhar(itensGanhar, todosItens);
+	//    
+	//    itensGanhar->ExibeLista();
+	//if (estado_jogo != Inicializado)
+	//   return;
+
+	plano->DeletaTudo();
+	InsereNplano(20, plano, todosItens);
+
+	estado_jogo = jogo::Jogando;
+
+	while (!IsExiting())
+	{
+		loop_jogo(hook, clock, plano, todosItens, itensGanhar);
+	}
+
+	janela.close();
 }
 
 bool jogo::IsExiting()
@@ -313,6 +366,11 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
             mostrar_menu();
             break;
         }
+		case jogo::Nova_Fase:
+		{
+			nova_fase(hook, clock, plano, todosItens, itensGanhar);
+			break;
+		}
         case jogo::Mostrando_Tela_Inicial:
         {
             mostrar_tela_inicial();
@@ -323,11 +381,16 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
             //mostrar_instrucao();
             break;
         }
-        case jogo::Mostrando_Transicao:
+        case jogo::Mostrando_Transicao_Passou:
         {
             mostrar_transicao();
             break;
         }
+		case jogo::Mostrando_Transicao_Horcrux:
+		{
+			mostrar_transicao_horcrux();
+			break;
+		}
         case jogo::Ganhando:
         {
             mostrar_ganhou(hook, clock, plano, todosItens, itensGanhar);
@@ -359,13 +422,33 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
             
             if (timer > 0)
             {
+				string countdownString;
+				if (countdown > 9)
+				{
+					countdownString = "00:" + to_string(countdown);
+				}
+				else
+					countdownString = "00:0" + to_string(countdown);
                 countdown = countdown - 1;
-                string countdownString = "00:" + to_string(countdown);
+                
                 timerText.setString(countdownString);
                 clock.restart();
             }
             
-            verifica_colisao(hook, plano, itensGanhar);
+			if (countdown == 0 || plano->QuantidadeElementos() == 0)
+			{
+				if (verifica_passou())
+				{
+					if(itensGanhar->QuantidadeElementos() != 6)
+						estado_jogo = jogo::Mostrando_Transicao_Horcrux;
+					else
+						estado_jogo = jogo::Mostrando_Transicao_Passou;
+				}
+				else
+					estado_jogo = jogo::Perdendo;
+			}
+
+			verifica_colisao(hook, plano, itensGanhar);
             janela.clear();
             janela.draw(background);
             hook->desenhar(janela);
@@ -373,7 +456,9 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
             desenha_todos_plano(plano, janela);
             janela.draw(botao_pausar);
             janela.draw(botao_sair);
+			janela.draw(nivelText);
             janela.draw(timerText);
+			janela.draw(metaText);
             janela.draw(totalText);
             janela.display();
             
@@ -620,11 +705,22 @@ void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral)
  }
 
 
-bool jogo::VerificaGanhou(ListaSimples *itensGanhar){
-    if(itensGanhar->QuantidadeElementos()==0)
-        return true;
+bool jogo::VerificaGanhou(ListaSimples *itensGanhar)
+{
+	if (itensGanhar->QuantidadeElementos() == 0)
+	{
+		return true;
+	}
     else
         return false;
+}
+
+bool jogo::verifica_passou()
+{
+	if (total >= meta)
+	{
+		return true;
+	}
 }
 
 void jogo::desenha_todos_plano(ListaSimples * plano, sf::RenderWindow& window)
@@ -685,7 +781,7 @@ void jogo::verifica_colisao(varinha* hook, ListaSimples * plano, ListaSimples * 
             feitico::lancado = false;
             varinha::_estado_varinha = varinha::Acertou;
             plano->ProcuraRemove(Paux->get_id(), ok);
-            totalText.setString(to_string(total));
+            totalText.setString("$ " + to_string(total));
         }
         Paux = Paux->get_next();
     }
@@ -710,6 +806,17 @@ void jogo::mostrar_menu()
 
 void jogo::mostrar_transicao()
 {
+	transicao_passou _transicao_passou;
+	_transicao_passou.set_meta(meta);
+	_transicao_passou.Mostrar(janela);
+	estado_jogo = jogo::Nova_Fase;
+}
+
+void jogo::mostrar_transicao_horcrux()
+{
+	transicao_horcrux _transicao_horcrux;
+	_transicao_horcrux.Mostrar(janela);
+	estado_jogo = jogo::Mostrando_Transicao_Passou;
 }
 
 int main(int argc, char** argv)

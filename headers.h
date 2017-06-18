@@ -12,13 +12,13 @@
 #include <iomanip>
 #include <locale>
 
-//#include "item.h"
+#include "transicao_passou.h"
+#include "transicao_horcrux.h"
 #include "menu.h"
 #include "tela_inicial.h"
 #include "ganhou.h"
 #include "perdeu.h"
 #include "varinha.h"
-//#include "gerenciador_itens.h"
 #include "feitico.h"
 //#include "ListaSimples.hpp"
 //#include "Nodetype.hpp"
