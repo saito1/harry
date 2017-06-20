@@ -31,7 +31,7 @@ void feitico::bombarda()
 {
 	if (existe_feitico)
 	{
-		_imagem.loadFromFile("imagens/bombarda.png");
+		_imagem.loadFromFile(resourcePath() + "bombarda.png");
 		_sprite.setTexture(_imagem);
 		_sprite.setPosition(10 * cos(dir) + 510, 10 * sin(dir) + 117);
 		tipo = 1;
@@ -42,7 +42,7 @@ void feitico::accio()
 {
 	if (existe_feitico)
 	{
-		_imagem.loadFromFile("imagens/accio.png");
+		_imagem.loadFromFile(resourcePath() + "accio.png");
 		_sprite.setTexture(_imagem);
 		_sprite.setPosition(10 * cos(dir) + 510, 10 * sin(dir) + 117);
 		tipo = 2;

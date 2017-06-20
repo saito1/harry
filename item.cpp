@@ -12,7 +12,7 @@
 //
 //void item::carregar(std::string nomearquivo)
 //{
-//	if (_imagem.loadFromFile(nomearquivo) == false)
+//	if (_imagem.loadFromFile(resourcePath() + nomearquivo) == false)
 //	{
 //		nome_arquivo = "";
 //		carregou = false;

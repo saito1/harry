@@ -7,6 +7,6 @@
 class Tela_Inicial
 {
 public:
-	void Mostrar(sf::RenderWindow& window);
+    void Mostrar(sf::RenderWindow& window);
 };
 #endif // !tela_inicial

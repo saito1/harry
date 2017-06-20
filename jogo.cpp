@@ -1,5 +1,4 @@
 #include "jogo.h"
-#include "headers.h"
 
 jogo::GameState jogo::estado_jogo = Inicializado;
 sf::RenderWindow jogo::janela;
@@ -16,13 +15,15 @@ int jogo::total = 0;
 int jogo::meta = 0;
 int jogo::nivel = 1;
 
-void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ListaSimples* itensGanhar)
-{    
+void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
+{
+   
+    
     //GAME CLOCK & TOTAL
     countdown = 30;
     total = 0;
-	meta = 650;
-	nivel = 1;
+    meta = 650;
+    nivel = 1;
     
     //convert countdown to a string
     string countdownString = "00:" + to_string(countdown);
@@ -30,16 +31,20 @@ void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSim
     //LOAD FONT AND TEXT
     timerText.setString(countdownString);
     
-	//LOAD FONT AND TEXT
-	nivelText.setString(to_string(nivel));
+    nivelText.setString(to_string(nivel));
+
+    
 
     //LOAD FONT AND TEXT
     totalText.setString("$ " + to_string(total));
-
-	//LOAD FONT AND TEXT
-	metaText.setString("$ " + to_string(meta));
-		 
+    
+    
+    metaText.setString("$ " + to_string(meta));
+    
+    
     //OLHAR ISSO DIREITO
+    
+    
     
 //    //Inicializando itensGanhar
 //    InicializaItensGanhar(itensGanhar, todosItens);
@@ -51,19 +56,22 @@ void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSim
     janela.create(sf::VideoMode(1024, 768), "HARRY", sf::Style::Close); //DEFINE TAMANHO DA JANELA, O QUE APARECE NO CABEÇALHO E FUNCOES DISPONIVEIS (FECHAR, RESIZE, MINIMIZAR)
     
     sf::Texture imagem;
-    imagem.loadFromFile("imagens/fundo2.jpg");
+    imagem.loadFromFile(resourcePath() + "fundo2.jpg");
     background.setTexture(imagem); //DEFINE O BACKGROUND
     
     //Resetando plano
     plano->DeletaTudo();
     
-    InsereNplano(20, plano, todosItens);
+ 
+    itensGanhar->InicializaItensGanhar(todosItens);  // INICIALIZANDO ITENS GANHAR
+    InsereNplano(20, plano, todosItens, itensGanhar);
+    
     
     estado_jogo = jogo::Mostrando_Tela_Inicial;
     
     while (!IsExiting())
     {
-        loop_jogo(hook, clock, plano, todosItens, itensGanhar);
+        loop_jogo(hook, clock, plano, todosItens, itensGanhar, destruidos);
     }
     
     janela.close();
@@ -74,9 +82,9 @@ void jogo::CriandoTudo()
     //GAME CLOCK & TIMER
     sf::Clock clock;
     
-    //LOAD GAME FONT
+    //LOAD GAME TIMER FONT
     sf::Font Font;
-    Font.loadFromFile("imagens/harry.ttf");
+    Font.loadFromFile(resourcePath() + "harry.ttf");
     
     //convert countdown to a string
     string countdownString = "00:" + to_string(countdown);
@@ -86,28 +94,30 @@ void jogo::CriandoTudo()
     timerText.setPosition(200, 22);
     timerText.setCharacterSize(30);
     timerText.setFillColor(sf::Color::Black);
-
+    
     //LOAD FONT AND TEXT
     totalText.setFont(Font);
     totalText.setPosition(67, 43);
     totalText.setCharacterSize(25);
     totalText.setFillColor(sf::Color::Black);
-
-	//LOAD FONT AND TEXT
-	metaText.setFont(Font);
-	metaText.setPosition(67, 13);
-	metaText.setCharacterSize(25);
-	metaText.setFillColor(sf::Color::Black);
-
-	//LOAD FONT AND TEXT
-	nivelText.setFont(Font);
-	nivelText.setPosition(360,40);
-	nivelText.setCharacterSize(30);
-	nivelText.setFillColor(sf::Color::Black);
+    
+    //LOAD FONT AND TEXT
+    metaText.setFont(Font);
+    metaText.setPosition(67, 13);
+    metaText.setCharacterSize(25);
+    metaText.setFillColor(sf::Color::Black);
+    
+    //LOAD FONT AND TEXT
+    nivelText.setFont(Font);
+    nivelText.setPosition(360, 40);
+    nivelText.setCharacterSize(30);
+    nivelText.setFillColor(sf::Color::Black);
+  
     
     varinha *hook = new varinha();
     
-    ListaSimples plano, todosItens, itensGanhar;
+    ListaSimples plano, todosItens;
+    ItensGanhar itensGanhar, destruidos;
     
     Nodetype *anel = new Nodetype(), *bellatrix = new Nodetype(), *calice = new Nodetype(), *chapeu = new Nodetype(), *comensal = new Nodetype(), *coruja = new Nodetype(),
     *dementador = new Nodetype(), *diadema = new Nodetype(), *diario = new Nodetype(), *dobby = new Nodetype(), *dolores = new Nodetype(), *draco = new Nodetype(),
@@ -121,91 +131,94 @@ void jogo::CriandoTudo()
     //HORCRUX 1 a 6
     
     anel->set_id(1);
-    anel->set_info("imagens/anel.png");
+    anel->set_info(resourcePath() + "anel.png");
     anel->set_tipo(3);
     anel->set_valor(1000);
     todosItens.Insere(anel);
-    horcrux1->CopiaNode(anel);                      //DEPOIS TEM Q COMENTAR TODOS AQUI Q INICIALIZA O ITENS GANHAR
-    itensGanhar.Insere(horcrux1);
+    //horcrux1->CopiaNode(anel);
+    //itensGanhar.Insere(horcrux1); // DEVERA SER NO START
     
     taca->set_id(2);
-    taca->set_info("imagens/taca.png");
+    taca->set_info(resourcePath() + "taca.png");
     taca->set_tipo(3);
     taca->set_valor(1000);
     todosItens.Insere(taca);
-    horcrux2->CopiaNode(taca);
-    itensGanhar.Insere(horcrux2);
+    //horcrux2->CopiaNode(taca);
+    //itensGanhar.Insere(horcrux2);
     
     medalhao->set_id(3);
-    medalhao->set_info("imagens/medalhao.png");
+    medalhao->set_info(resourcePath() + "medalhao.png");
     medalhao->set_tipo(3);
     medalhao->set_valor(1000);
     todosItens.Insere(medalhao);
-    horcrux3->CopiaNode(medalhao);
-    itensGanhar.Insere(horcrux3);
+    //horcrux3->CopiaNode(medalhao);
+   // itensGanhar.Insere(horcrux3);
     
     diadema->set_id(4);
-    diadema->set_info("imagens/diadema.png");
+    diadema->set_info(resourcePath() + "diadema.png");
     diadema->set_tipo(3);
     diadema->set_valor(1000);
-    horcrux4->CopiaNode(diadema);
-    itensGanhar.Insere(horcrux4);
+    todosItens.Insere(diadema);
+    //horcrux4->CopiaNode(diadema);
+    //itensGanhar.Insere(horcrux4);
     
     diario->set_id(5);
-    diario->set_info("imagens/diario.png");
+    diario->set_info(resourcePath() + "diario.png");
     diario->set_tipo(3);
     diario->set_valor(1000);
-    horcrux5->CopiaNode(diario);
-    itensGanhar.Insere(horcrux5);
+    todosItens.Insere(diario);
+    //horcrux5->CopiaNode(diario);
+    //itensGanhar.Insere(horcrux5);
     
     nagini->set_id(6);
-    nagini->set_info("imagens/nagini.png");
+    nagini->set_info(resourcePath() + "nagini.png");
     nagini->set_tipo(3);
     nagini->set_valor(1000);
-    horcrux6->CopiaNode(nagini);
-    itensGanhar.Insere(horcrux6);
+    todosItens.Insere(nagini);
+    //horcrux6->CopiaNode(nagini);
+    //itensGanhar.Insere(horcrux6);
     
     
     // INIMIGOS 7 a 13
     
     voldemort->set_id(7);
-    voldemort->set_info("imagens/voldemort.png");
+    voldemort->set_info(resourcePath() + "voldemort.png");
     voldemort->set_tipo(1);
     voldemort->set_valor(5000);
     todosItens.Insere(voldemort);
     
     dementador->set_id(8);
-    dementador->set_info("imagens/dementador.png");
+    dementador->set_info(resourcePath() + "dementador.png");
     dementador->set_tipo(1);
     dementador->set_valor(300);
     todosItens.Insere(dementador);
     
     bellatrix->set_id(9);
-    bellatrix->set_info("imagens/bellatrix.png");
+    bellatrix->set_info(resourcePath() + "bellatrix.png");
     bellatrix->set_tipo(1);
     bellatrix->set_valor(250);
     todosItens.Insere(bellatrix);
     
     dolores->set_id(10);
-    dolores->set_info("imagens/dolores.png");
+    dolores->set_info(resourcePath() + "dolores.png");
     dolores->set_tipo(1);
     dolores->set_valor(200);
     todosItens.Insere(dolores);
     
     lucius->set_id(11);
-    lucius->set_info("imagens/lucius.png");
+    lucius->set_info(resourcePath() + "lucius.png");
     lucius->set_tipo(1);
     lucius->set_valor(150);
     todosItens.Insere(lucius);
     
     comensal->set_id(12);
-    comensal->set_info("imagens/comensal.png");
+    comensal->set_info(resourcePath() + "comensal.png");
     comensal->set_tipo(1);
     comensal->set_valor(100);
     todosItens.Insere(comensal);
     
     draco->set_id(13);
-    draco->set_info("imagens/draco.png");
+    draco->set_info(resourcePath() + "draco.png");
     draco->set_tipo(1);
     draco->set_valor(75);
     todosItens.Insere(draco);
@@ -214,45 +227,45 @@ void jogo::CriandoTudo()
     // AMIGOS 14 a 20
     
     dumbledore->set_id(14);
-    dumbledore->set_info("imagens/dumbledore.png");
+    dumbledore->set_info(resourcePath() + "dumbledore.png");
     dumbledore->set_tipo(2);
     dumbledore->set_valor(300);
     todosItens.Insere(dumbledore);
-    
+   
     minerva->set_id(15);
-    minerva->set_info("imagens/minerva.png");
+    minerva->set_info(resourcePath() + "minerva.png");
     minerva->set_tipo(2);
     minerva->set_valor(300);
     todosItens.Insere(minerva);
-    
+   
     hermione->set_id(16);
-    hermione->set_info("imagens/hermione.png");
+    hermione->set_info(resourcePath() + "hermione.png");
     hermione->set_tipo(2);
     hermione->set_valor(250);
     todosItens.Insere(hermione);
-    
+   
     ron->set_id(17);
-    ron->set_info("imagens/ron.png");
+    ron->set_info(resourcePath() + "ron.png");
     ron->set_tipo(2);
     ron->set_valor(250);
     todosItens.Insere(ron);
-    
+   
     
     snape->set_id(18);
-    snape->set_info("imagens/snape.png");
+    snape->set_info(resourcePath() + "snape.png");
     snape->set_tipo(2);
     snape->set_valor(200);
     todosItens.Insere(snape);
-    
+   
     
     hagrid->set_id(19);
-    hagrid->set_info("imagens/hagrid.png");
+    hagrid->set_info(resourcePath() + "hagrid.png");
     hagrid->set_tipo(2);
     hagrid->set_valor(125);
     todosItens.Insere(hagrid);
     
     dobby->set_id(20);
-    dobby->set_info("imagens/dobby.png");
+    dobby->set_info(resourcePath() + "dobby.png");
     dobby->set_tipo(2);
     dobby->set_valor(50);
     todosItens.Insere(dobby);
@@ -261,94 +274,95 @@ void jogo::CriandoTudo()
     // ITENS 21 a 26
     
     pomo->set_id(21);
-    pomo->set_info("imagens/pomo1.png");
+    pomo->set_info(resourcePath() + "pomo1.png");
     pomo->set_tipo(4);
     pomo->set_valor(500);
     todosItens.Insere(pomo);
     
     chapeu->set_id(22);
-    chapeu->set_info("imagens/chapeu.png");
+    chapeu->set_info(resourcePath() + "chapeu.png");
     chapeu->set_tipo(4);
     chapeu->set_valor(75);
     todosItens.Insere(chapeu);
     
     calice->set_id(23);
-    calice->set_info("imagens/calice.png");
+    calice->set_info(resourcePath() + "calice.png");
     calice->set_tipo(4);
     calice->set_valor(60);
     todosItens.Insere(calice);
     
     felix->set_id(24);
-    felix->set_info("imagens/felix.png");
+    felix->set_info(resourcePath() + "felix.png");
     felix->set_tipo(4);
     felix->set_valor(50);
     todosItens.Insere(felix);
     
     coruja->set_id(25);
-    coruja->set_info("imagens/coruja.png");
+    coruja->set_info(resourcePath() + "coruja.png");
     coruja->set_tipo(4);
     coruja->set_valor(30);
     todosItens.Insere(coruja);
     
     livro->set_id(26);
-    livro->set_info("imagens/livro.png");
+    livro->set_info(resourcePath() + "livro.png");
     livro->set_tipo(4);
     livro->set_valor(10);
     todosItens.Insere(livro);
+ 
     
-    jogo::Start(hook, clock, &plano, &todosItens, &itensGanhar);
+    jogo::Start(hook, clock, &plano, &todosItens, &itensGanhar, &destruidos);
 }
 
-void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ListaSimples* itensGanhar)
+void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
-    jogo::Start(hook, clock, plano, todosItens, itensGanhar);
+    jogo::Start(hook, clock, plano, todosItens, itensGanhar, destruidos);
     estado_jogo = jogo::Jogando;
 }
-
-void jogo::nova_fase(varinha * hook, sf::Clock & clock, ListaSimples * plano, ListaSimples * todosItens, ListaSimples * itensGanhar)
-{
-	//GAME CLOCK & TOTAL
-	countdown = 30 + (nivel * 5);
-	meta += 650 + (total/2);
-	nivel += 1;
-
-	//convert countdown to a string
-	string countdownString = "00:" + to_string(countdown);
-
-	//LOAD FONT AND TEXT
-	timerText.setString(countdownString);
-
-	//LOAD FONT AND TEXT
-	nivelText.setString(to_string(nivel));
-
-	//LOAD FONT AND TEXT
-	totalText.setString("$ " + to_string(total));
-
-	//LOAD FONT AND TEXT
-	metaText.setString("$ " + to_string(meta));
-
-	//OLHAR ISSO DIREITO
-
-	//    //Inicializando itensGanhar
-	//    InicializaItensGanhar(itensGanhar, todosItens);
-	//    
-	//    itensGanhar->ExibeLista();
-	//if (estado_jogo != Inicializado)
-	//   return;
-
-	plano->DeletaTudo();
-	InsereNplano(20, plano, todosItens);
-
-	estado_jogo = jogo::Jogando;
-
-	while (!IsExiting())
-	{
-		loop_jogo(hook, clock, plano, todosItens, itensGanhar);
-	}
-
-	janela.close();
+                       
+void jogo::nova_fase(varinha * hook, sf::Clock & clock, ListaSimples * plano, ListaSimples * todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
+    {
+    //GAME CLOCK & TOTAL
+    countdown = 30 + (nivel * 5);
+    meta += 650 + (total/2);
+    nivel += 1;
+        
+    //convert countdown to a string
+    string countdownString = "00:" + to_string(countdown);
+        
+    //LOAD FONT AND TEXT
+    timerText.setString(countdownString);
+        
+    //LOAD FONT AND TEXT
+    nivelText.setString(to_string(nivel));
+        
+    //LOAD FONT AND TEXT
+    totalText.setString("$ " + to_string(total));
+        
+    //LOAD FONT AND TEXT
+    metaText.setString("$ " + to_string(meta));
+        
+    //OLHAR ISSO DIREITO
+        
+    //    //Inicializando itensGanhar
+    //    InicializaItensGanhar(itensGanhar, todosItens);
+    //
+    //    itensGanhar->ExibeLista();
+    //if (estado_jogo != Inicializado)
+    //   return;
+        
+    plano->DeletaTudo();
+    InsereNplano(20, plano, todosItens, itensGanhar);
+        
+    estado_jogo = jogo::Jogando;
+        
+    while (!IsExiting())
+    {
+        loop_jogo(hook, clock, plano, todosItens, itensGanhar, destruidos);
+    }
+        
+    janela.close();
 }
-
+                       
 bool jogo::IsExiting()
 {
     if (estado_jogo == jogo::Saindo)
@@ -357,7 +371,7 @@ bool jogo::IsExiting()
         return false;
 }
 
-void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ListaSimples* itensGanhar)
+void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
     switch (estado_jogo)
     {
@@ -366,11 +380,11 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
             mostrar_menu();
             break;
         }
-		case jogo::Nova_Fase:
-		{
-			nova_fase(hook, clock, plano, todosItens, itensGanhar);
-			break;
-		}
+        case jogo::Nova_Fase:
+        {
+            nova_fase(hook, clock, plano, todosItens, itensGanhar, destruidos);
+            break;
+        }
         case jogo::Mostrando_Tela_Inicial:
         {
             mostrar_tela_inicial();
@@ -386,19 +400,19 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
             mostrar_transicao();
             break;
         }
-		case jogo::Mostrando_Transicao_Horcrux:
-		{
-			mostrar_transicao_horcrux();
-			break;
-		}
+        case jogo::Mostrando_Transicao_Horcrux:
+        {
+            mostrar_transicao_horcrux();
+            break;
+        }
         case jogo::Ganhando:
         {
-            mostrar_ganhou(hook, clock, plano, todosItens, itensGanhar);
+            mostrar_ganhou(hook, clock, plano, todosItens, itensGanhar, destruidos);
             break;
         }
         case jogo::Perdendo:
         {
-            mostrar_perdeu(hook, clock, plano, todosItens, itensGanhar);
+            mostrar_perdeu(hook, clock, plano, todosItens, itensGanhar, destruidos);
             break;
         }
         case jogo::Jogando:
@@ -409,11 +423,11 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
             sf::Sprite botao_sair;
             sf::Texture imagem2;
             
-            imagem1.loadFromFile("imagens/pausar.png");
+            imagem1.loadFromFile(resourcePath() + "pausar.png");
             botao_pausar.setTexture(imagem1);
             botao_pausar.setPosition(897, 30);
             
-            imagem2.loadFromFile("imagens/sair.png");
+            imagem2.loadFromFile(resourcePath() + "sair.png");
             botao_sair.setTexture(imagem2);
             botao_sair.setPosition(910, 75);
             
@@ -422,36 +436,40 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
             
             if (timer > 0)
             {
-				string countdownString;
-				if (countdown > 9)
-				{
-					countdownString = "00:" + to_string(countdown);
-				}
-				else
-					countdownString = "00:0" + to_string(countdown);
-                countdown = countdown - 1;
+                string countdownString;
+                if (countdown > 9)
+                {
+                    countdownString = "00:" + to_string(countdown);
+                }
+                else
+                    countdownString = "00:0" + to_string(countdown);
                 
+                countdown = countdown - 1;
                 timerText.setString(countdownString);
                 clock.restart();
             }
             
-			if (countdown == 0 || plano->QuantidadeElementos() == 0)
-			{
-				if (verifica_passou())
-				{
-					if(itensGanhar->QuantidadeElementos() != 6)
-						estado_jogo = jogo::Mostrando_Transicao_Horcrux;
-					else
-						estado_jogo = jogo::Mostrando_Transicao_Passou;
-				}
-				else
-					estado_jogo = jogo::Perdendo;
-			}
-
-			if (VerificaGanhou(itensGanhar))
-				estado_jogo = jogo::Ganhando;
-
-			verifica_colisao(hook, plano, itensGanhar);
+            
+            if (countdown == 0 || plano->QuantidadeElementos() == 0)
+            {
+                if (verifica_passou())
+                {
+                    if(itensGanhar->QuantidadeElementos() != 6)
+                        estado_jogo = jogo::Mostrando_Transicao_Horcrux;
+                    else
+                        estado_jogo = jogo::Mostrando_Transicao_Passou;
+                }
+                else
+                    estado_jogo = jogo::Perdendo;
+            }
+            
+            if (VerificaGanhou(itensGanhar))
+                estado_jogo = jogo::Ganhando;
+            
+            
+            
+            
+            verifica_colisao(hook, plano, itensGanhar, destruidos, todosItens);
             janela.clear();
             janela.draw(background);
             hook->desenhar(janela);
@@ -459,9 +477,9 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
             desenha_todos_plano(plano, janela);
             janela.draw(botao_pausar);
             janela.draw(botao_sair);
-			janela.draw(nivelText);
+            janela.draw(nivelText);
             janela.draw(timerText);
-			janela.draw(metaText);
+            janela.draw(metaText);
             janela.draw(totalText);
             janela.display();
             
@@ -525,7 +543,7 @@ void jogo::mostrar_tela_inicial()
     estado_jogo = jogo::Mostrando_Menu;
 }
 
-void jogo::mostrar_ganhou(varinha *hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ListaSimples* itensGanhar)
+void jogo::mostrar_ganhou(varinha *hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
     Ganhou ganhou;
     Ganhou::ganhou resultado = ganhou.Mostrar(janela);
@@ -535,12 +553,12 @@ void jogo::mostrar_ganhou(varinha *hook, sf::Clock & clock, ListaSimples* plano,
             estado_jogo = jogo::Saindo;
             break;
         case Ganhou::Jogar_Novamente:
-            jogo::JogarNovamente(hook, clock, plano, todosItens, itensGanhar);
+            jogo::JogarNovamente(hook, clock, plano, todosItens, itensGanhar, destruidos);
             break;
     }
 }
 
-void jogo::mostrar_perdeu(varinha *hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ListaSimples* itensGanhar)
+void jogo::mostrar_perdeu(varinha *hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
     Perdeu perdeu;
     Perdeu::perdeu resultado = perdeu.Mostrar(janela);
@@ -550,33 +568,14 @@ void jogo::mostrar_perdeu(varinha *hook, sf::Clock & clock, ListaSimples* plano,
             estado_jogo = jogo::Saindo;
             break;
         case Perdeu::Jogar_Novamente:
-            jogo::JogarNovamente(hook, clock, plano, todosItens, itensGanhar);
+            jogo::JogarNovamente(hook, clock, plano, todosItens, itensGanhar, destruidos);
             break;
     }
 }
 
 
-//OLHAR ISSO DIREITO
-//void jogo::InicializaItensGanhar(ListaSimples *itensGanhar, ListaSimples *listaGeral){
-//    int i, x, y;
-//    Nodetype *no;
-//    Nodetype *noPtr;
-//    
-//    
-//    cout << "agora 4 : " << listaGeral->PegaElementoN(4)->get_id() << endl;
-//    for (i = 1; i<=6; i++)
-//    {
-//        no = listaGeral->PegaElementoN(i);
-//        noPtr = new Nodetype();
-//        noPtr->CopiaNode(no);
-//        noPtr->carregar(noPtr->get_info());
-//        
-//        itensGanhar->Insere(noPtr);
-//    }
-//    
-//}
 
-void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral)
+void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral, ItensGanhar *itensGanhar)
 {
     int i, x, y, qtd = 0, r;
    // int restantes = n, qtd, maisI;
@@ -589,7 +588,9 @@ void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral)
     cout << "r = " << r << endl; // confirmar a frequencia que o 1 aparece
     if(r==0){
         // Inserindo horcrux
-        no = listaGeral->PegaElementoAleatorioTodosTipoX(3);
+        itensGanhar->ExibeLista();
+        no = itensGanhar->PegaElementoAleatorio();
+       // no = listaGeral->PegaElementoAleatorio();
         noPtr = new Nodetype();
         noPtr->CopiaNode(no);
         noPtr->set_id(0);
@@ -708,24 +709,26 @@ void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral)
  }
 
 
-bool jogo::VerificaGanhou(ListaSimples *itensGanhar)
+bool jogo::VerificaGanhou(ItensGanhar* itensGanhar)
 {
-	if (itensGanhar->QuantidadeElementos() == 0)
-	{
-		return true;
-	}
+    if (itensGanhar->QuantidadeElementos() == 0)
+    {
+        return true;
+    }
     else
+    {
         return false;
+    }
 }
-
+                       
 bool jogo::verifica_passou()
 {
-	if (total >= meta)
-	{
-		return true;
-	}
+    if (total >= meta)
+    {
+        return true;
+    }
 }
-
+                       
 void jogo::desenha_todos_plano(ListaSimples * plano, sf::RenderWindow& window)
 {
     Nodetype *Paux;
@@ -741,7 +744,7 @@ void jogo::desenha_todos_plano(ListaSimples * plano, sf::RenderWindow& window)
     }
 }
 
-void jogo::verifica_colisao(varinha* hook, ListaSimples * plano, ListaSimples * itensGanhar)
+void jogo::verifica_colisao(varinha* hook, ListaSimples * plano, ItensGanhar* itensGanhar, ItensGanhar* destruidos, ListaSimples* todosItens)
 {
     Nodetype *Paux;
     bool ok = false;
@@ -771,7 +774,8 @@ void jogo::verifica_colisao(varinha* hook, ListaSimples * plano, ListaSimples * 
                     else
                     {
                         total += Paux->get_valor();
-                        itensGanhar->ProcuraRemove(Paux->get_info(), ok);
+                        //itensGanhar->ProcuraRemove(Paux->get_info(), ok);
+                        itensGanhar->ProcuraRemove(Paux->get_id(), ok, destruidos, todosItens);  // ACHO QUE O ERRO ESTA AQUI
                     }
                     break;
                 case 4:
@@ -806,22 +810,22 @@ void jogo::mostrar_menu()
              estado_jogo = jogo::Mostrando_Instrucao;*/
     }
 }
-
+                       
 void jogo::mostrar_transicao()
 {
-	transicao_passou _transicao_passou;
-	_transicao_passou.set_meta(meta + (total/2));
-	_transicao_passou.Mostrar(janela);
-	estado_jogo = jogo::Nova_Fase;
+    transicao_passou _transicao_passou;
+    _transicao_passou.set_meta(meta + (total/2));
+    _transicao_passou.Mostrar(janela);
+    estado_jogo = jogo::Nova_Fase;
 }
-
+                       
 void jogo::mostrar_transicao_horcrux()
 {
-	transicao_horcrux _transicao_horcrux;
-	_transicao_horcrux.Mostrar(janela);
-	estado_jogo = jogo::Mostrando_Transicao_Passou;
+    transicao_horcrux _transicao_horcrux;
+    _transicao_horcrux.Mostrar(janela);
+    estado_jogo = jogo::Mostrando_Transicao_Passou;
 }
-
+                       
 int main(int argc, char** argv)
 {
     jogo::CriandoTudo();

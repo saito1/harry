@@ -96,12 +96,7 @@ inline bool Nodetype::colidiu(feitico& _feitico)
 			&& _sprite.getPosition().y - _sprite.getLocalBounds().height / 2 <= _feitico.get_bounding_rect().top + _feitico.get_bounding_rect().height
 			&& _sprite.getPosition().y + _sprite.getLocalBounds().height / 2 >= _feitico.get_bounding_rect().top )
 		{
-			/*cout << _sprite.getLocalBounds().left << "<=" << _feitico.get_bounding_rect().left << endl;
-			cout << _sprite.getLocalBounds().left + _sprite.getLocalBounds().width << ">=" << _feitico.get_bounding_rect().left << endl;
-			cout << _sprite.getLocalBounds().top << "<=" << _feitico.get_bounding_rect().top << endl;
-			cout << _sprite.getLocalBounds().top << "<=" << _feitico.get_bounding_rect().top + _feitico.get_bounding_rect().height << endl;
-			cout << get_info() << endl;
-			cout << "colidiu" << endl;*/
+
 			return true;
 		}
 	}

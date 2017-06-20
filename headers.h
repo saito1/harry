@@ -12,8 +12,6 @@
 #include <iomanip>
 #include <locale>
 
-#include "transicao_passou.h"
-#include "transicao_horcrux.h"
 #include "menu.h"
 #include "tela_inicial.h"
 #include "ganhou.h"
@@ -22,5 +20,9 @@
 #include "feitico.h"
 //#include "ListaSimples.hpp"
 //#include "Nodetype.hpp"
+#include "transicao_passou.h"
+#include "transicao_horcrux.h"
+
+#include "ResourcePath.hpp"
 
 using namespace std;

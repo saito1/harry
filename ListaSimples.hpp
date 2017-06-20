@@ -29,6 +29,7 @@ public:
     Nodetype* PegaElementoAleatorioTodosTipoX(int x) const; // pega um elemento aleatorio do tipo X
 	Nodetype* PegaElementoN(int n) const; // pega o N-esimo elemento da lista
 	int QuantidadeElementos() const; // conta a quantidade de elementos da lista
+    Nodetype* PegaElementoID(int id, bool &DeuCerto) ; // pega o elemento da lista pelo ID
 
 private:
 	Nodetype *P;
@@ -101,8 +102,11 @@ void ListaSimples::ProcuraRemove(int x, bool &DeuCerto){
 	}
 	else{
 		Paux = P;
+        cout << "EM UMA MAO : " << x << " EM OUTRA MAO: " << Paux->get_next()->get_id() << endl;
 		while((Paux->get_next()->get_id()!=x)&&(Paux->get_next()!=NULL)){
 			Paux = Paux->get_next();
+            cout << "EM UMA MAO : " << x << " EM OUTRA MAO: " << Paux->get_next()->get_id() << endl;
+            
 		}
 		if(Paux->get_next()!=NULL){
 			Remove(Paux, DeuCerto);
@@ -163,7 +167,6 @@ int ListaSimples::QuantidadeElementos() const {
 }
 
 Nodetype* ListaSimples::PegaElementoAleatorio() const{
-
 	Nodetype *Paux;
 	Paux = P;
 	int r,i;
@@ -200,7 +203,10 @@ Nodetype* ListaSimples::PegaElementoAleatorioTodosTipoX(int x) const{
             break;
             
         case 5:
-            r = (rand() % (QuantidadeElementos()-6) + 6);
+            r = (rand() % (QuantidadeElementos()-6) + 7); // NAO INSERE HORCRUX NEM VOLDEMORT
+            if(r==7)
+                r = 26;
+            cout << "AQUI AGORA TEM R = " << r << endl;
             break;
         default:
             r = 0; // should never happen
@@ -225,6 +231,36 @@ Nodetype* ListaSimples::PegaElementoN(int n) const{
 	}
 
 	return Paux;
+}
+
+Nodetype* ListaSimples::PegaElementoID(int id, bool &DeuCerto) {
+    Nodetype *Paux;
+    if (Vazia()) {
+        DeuCerto = false;
+    }
+
+    else if (P->get_id() == id) {
+        DeuCerto = true;
+        Paux = P;
+        P = P->get_next();
+        return Paux;
+    }
+    else {
+        Paux = P;
+        while ((Paux->get_next()->get_id() != id) && (Paux->get_next() != NULL)) {
+            Paux = Paux->get_next();
+        }
+        if (Paux->get_next() != NULL) {
+            DeuCerto = true;
+            return Paux;
+        }
+        else{
+            DeuCerto = false;
+        }
+    }
+    
+    return NULL;
+    
 }
 
 #endif

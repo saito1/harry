@@ -9,7 +9,7 @@ void transicao_passou::Mostrar(sf::RenderWindow & renderWindow)
 {
 	//LOAD GAME FONT
 	sf::Font Font;
-	Font.loadFromFile("imagens/harry.ttf");
+	Font.loadFromFile(resourcePath() + "harry.ttf");
 
 	//LOAD FONT AND TEXT
 	metaText.setFont(Font);
@@ -19,7 +19,7 @@ void transicao_passou::Mostrar(sf::RenderWindow & renderWindow)
 	metaText.setString(to_string(get_meta()));
 
 	sf::Texture imagem;
-	if (imagem.loadFromFile("imagens/transicao1.jpg") != true)
+	if (imagem.loadFromFile(resourcePath() + "transicao1.jpg") != true)
 		return;
 
 	sf::Sprite sprite;
