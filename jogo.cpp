@@ -40,18 +40,7 @@ void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSim
     
     
     metaText.setString("$ " + to_string(meta));
-    
-    
-    //OLHAR ISSO DIREITO
-    
-    
-    
-//    //Inicializando itensGanhar
-//    InicializaItensGanhar(itensGanhar, todosItens);
-//    
-//    itensGanhar->ExibeLista();
-    //if (estado_jogo != Inicializado)
-     //   return;
+
     
     janela.create(sf::VideoMode(1024, 768), "HARRY", sf::Style::Close); //DEFINE TAMANHO DA JANELA, O QUE APARECE NO CABEÇALHO E FUNCOES DISPONIVEIS (FECHAR, RESIZE, MINIMIZAR)
     
@@ -313,6 +302,8 @@ void jogo::CriandoTudo()
     jogo::Start(hook, clock, &plano, &todosItens, &itensGanhar, &destruidos);
 }
 
+// LEMBRAR DE SETTAR O FEITICO PARA NAO LANCADO
+
 void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
     jogo::Start(hook, clock, plano, todosItens, itensGanhar, destruidos);
@@ -517,6 +508,9 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, List
                         if (evento_atual.mouseButton.button == sf::Mouse::Left)
                             if (botao_pausar.getGlobalBounds().contains(sf::Mouse::getPosition(janela).x, sf::Mouse::getPosition(janela).y))
                             {
+                                
+                                // PRESTAR ATENCAO PQ ESTA SOLTANDO UM FEITICO QUANDO DESPAUSA
+                                
                                 mostrar_menu();
                             }
                         if (evento_atual.mouseButton.button == sf::Mouse::Left)
@@ -583,14 +577,11 @@ void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral, 
     Nodetype *noPtr;
     
     // 33% de chance de ter 1 horcrux na fase e 66% de chance de nao ter nenhuma (pode ser alterado, apenas mudando o 2 ali)
-    //r = (rand() % 2);
-    r = 0;
-    cout << "r = " << r << endl; // confirmar a frequencia que o 1 aparece
+    //r = (rand() % 2); // DESCOMENTAR ESSE;
+    r = 0; // MUDAR ISSO DEPOIS
     if(r==0){
         // Inserindo horcrux
-        itensGanhar->ExibeLista();
         no = itensGanhar->PegaElementoAleatorio();
-       // no = listaGeral->PegaElementoAleatorio();
         noPtr = new Nodetype();
         noPtr->CopiaNode(no);
         noPtr->set_id(0);
@@ -774,8 +765,7 @@ void jogo::verifica_colisao(varinha* hook, ListaSimples * plano, ItensGanhar* it
                     else
                     {
                         total += Paux->get_valor();
-                        //itensGanhar->ProcuraRemove(Paux->get_info(), ok);
-                        itensGanhar->ProcuraRemove(Paux->get_id(), ok, destruidos, todosItens);  // ACHO QUE O ERRO ESTA AQUI
+                        itensGanhar->ProcuraRemove(Paux->get_info(), ok, destruidos, todosItens);  // ACHO QUE O ERRO ESTA AQUI
                     }
                     break;
                 case 4:

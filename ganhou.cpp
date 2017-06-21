@@ -1,4 +1,3 @@
-#include "headers.h"
 #include "ganhou.h"
 
 Ganhou::ganhou Ganhou::Mostrar(sf::RenderWindow & renderWindow)

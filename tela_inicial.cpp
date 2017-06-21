@@ -1,4 +1,3 @@
-#include "headers.h"
 #include "tela_inicial.h"
 
 void Tela_Inicial::Mostrar(sf::RenderWindow & renderWindow)

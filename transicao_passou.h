@@ -1,8 +1,12 @@
 #ifndef TRANSICAO_PASSOU_H
 #define TRANSICAO_PASSOU_H
 
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include "ResourcePath.hpp"
+
+using namespace std;
 
 class transicao_passou
 {

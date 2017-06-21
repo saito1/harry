@@ -1,8 +1,13 @@
 #ifndef perdeu_h
 #define perdeu_h
 
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <list>
+#include "ResourcePath.hpp"
+
+using namespace std;
 
 class Perdeu
 {

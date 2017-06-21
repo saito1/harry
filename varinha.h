@@ -1,7 +1,13 @@
 #ifndef VARINHA_H
 #define VARINHA_H
 
-#include "headers.h"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include "ResourcePath.hpp"
+#include "feitico.h"
+
+using namespace std;
 
 class varinha
 {

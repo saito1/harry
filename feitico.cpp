@@ -1,4 +1,4 @@
-#include "headers.h"
+#include "feitico.h"
 
 feitico::feitico() :_velocity(50.f), _elapsedTimeSinceStart(0.0f)
 {

@@ -1,4 +1,3 @@
-#include "headers.h"
 #include "perdeu.h"
 
 Perdeu::perdeu Perdeu::Mostrar(sf::RenderWindow & renderWindow)

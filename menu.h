@@ -1,9 +1,13 @@
 #ifndef menu_h
 #define menu_h
 
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <iostream>
 #include <list>
+#include "ResourcePath.hpp"
+
+using namespace std;
 
 class Menu
 {

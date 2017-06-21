@@ -1,4 +1,4 @@
-#include "headers.h"
+#include "transicao_horcrux.h"
 
 void transicao_horcrux::Mostrar(sf::RenderWindow & renderWindow)
 {

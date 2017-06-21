@@ -29,7 +29,7 @@ public:
     Nodetype* PegaElementoAleatorioTodosTipoX(int x) const; // pega um elemento aleatorio do tipo X
 	Nodetype* PegaElementoN(int n) const; // pega o N-esimo elemento da lista
 	int QuantidadeElementos() const; // conta a quantidade de elementos da lista
-    Nodetype* PegaElementoID(int id, bool &DeuCerto) ; // pega o elemento da lista pelo ID
+    Nodetype* PegaElementoInfo(string info, bool &DeuCerto) ; // pega o elemento da lista pelo ID
 
 private:
 	Nodetype *P;
@@ -102,10 +102,8 @@ void ListaSimples::ProcuraRemove(int x, bool &DeuCerto){
 	}
 	else{
 		Paux = P;
-        cout << "EM UMA MAO : " << x << " EM OUTRA MAO: " << Paux->get_next()->get_id() << endl;
 		while((Paux->get_next()->get_id()!=x)&&(Paux->get_next()!=NULL)){
 			Paux = Paux->get_next();
-            cout << "EM UMA MAO : " << x << " EM OUTRA MAO: " << Paux->get_next()->get_id() << endl;
             
 		}
 		if(Paux->get_next()!=NULL){
@@ -170,9 +168,7 @@ Nodetype* ListaSimples::PegaElementoAleatorio() const{
 	Nodetype *Paux;
 	Paux = P;
 	int r,i;
-	r = (rand() % QuantidadeElementos());
-
-	//cout << "------------------- r = " << r << endl;
+	r = (rand() % (QuantidadeElementos()-1) + 1);
 
 	for(i=1;i<r;i++){
 		Paux = Paux->get_next();
@@ -203,10 +199,7 @@ Nodetype* ListaSimples::PegaElementoAleatorioTodosTipoX(int x) const{
             break;
             
         case 5:
-            r = (rand() % (QuantidadeElementos()-6) + 7); // NAO INSERE HORCRUX NEM VOLDEMORT
-            if(r==7)
-                r = 26;
-            cout << "AQUI AGORA TEM R = " << r << endl;
+            r = (rand() % (QuantidadeElementos()-8) + 8); // NAO INSERE HORCRUX NEM VOLDEMORT
             break;
         default:
             r = 0; // should never happen
@@ -233,13 +226,13 @@ Nodetype* ListaSimples::PegaElementoN(int n) const{
 	return Paux;
 }
 
-Nodetype* ListaSimples::PegaElementoID(int id, bool &DeuCerto) {
+Nodetype* ListaSimples::PegaElementoInfo(string info, bool &DeuCerto) {
     Nodetype *Paux;
     if (Vazia()) {
         DeuCerto = false;
     }
 
-    else if (P->get_id() == id) {
+    else if (P->get_info() == info) {
         DeuCerto = true;
         Paux = P;
         P = P->get_next();
@@ -247,7 +240,7 @@ Nodetype* ListaSimples::PegaElementoID(int id, bool &DeuCerto) {
     }
     else {
         Paux = P;
-        while ((Paux->get_next()->get_id() != id) && (Paux->get_next() != NULL)) {
+        while ((Paux->get_next()->get_info() != info) && (Paux->get_next() != NULL)) {
             Paux = Paux->get_next();
         }
         if (Paux->get_next() != NULL) {

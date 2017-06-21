@@ -11,7 +11,7 @@ public:
     ItensGanhar();
     ~ItensGanhar();
     void InicializaItensGanhar(ListaSimples *listaGeral);
-    void ProcuraRemove(int id, bool &DeuCerto, ItensGanhar *destruidos, ListaSimples *todosItens);
+    void ProcuraRemove(string info, bool &DeuCerto, ItensGanhar *destruidos, ListaSimples *todosItens);
 };
 
 ItensGanhar::ItensGanhar() : ListaSimples(){
@@ -40,13 +40,23 @@ void ItensGanhar::InicializaItensGanhar(ListaSimples *listaGeral){
 }
 
 
-void ItensGanhar::ProcuraRemove(int id, bool &DeuCerto, ItensGanhar *destruidos, ListaSimples * todosItens){
-    Nodetype *no;
-    //no = todosItens->PegaElementoID(id, DeuCerto);
-    ListaSimples::ProcuraRemove(id,DeuCerto);
+void ItensGanhar::ProcuraRemove(string info, bool &DeuCerto, ItensGanhar *destruidos, ListaSimples * todosItens){
+    Nodetype *no, *noPtr;
+    //no = todosItens->PegaElementoInfo(info, DeuCerto);
+    //cout << "COMECEI A VER AS COISAS DELE" << endl;
+   // no->ExibeInformacoes();
+    //noPtr->CopiaNode(no);
+    //cout << "COPIEI " << endl;
+   // noPtr->ExibeInformacoes();
+    //noPtr->set_id(destruidos->QuantidadeElementos()+1);
+    ListaSimples::ProcuraRemove(info,DeuCerto);
 //    if(DeuCerto){
-//        destruidos->Insere(no);
+//        cout << "ENTREI AQUI NO DEU CERTO" << endl;
+//        //destruidos->Insere(noPtr);
+//        cout << "ESTOU SAINDO DO DEU CERTO" << endl;
 //    }
+//    
+//    destruidos->ExibeLista();
 }
 
 #endif /* ItensGanhar_hpp */

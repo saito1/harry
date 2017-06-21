@@ -1,4 +1,4 @@
-#include "headers.h"
+#include "varinha.h"
 
 varinha::varinha(): _velocity(20.f), _elapsedTimeSinceStart(0.0f)
 {

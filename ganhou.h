@@ -1,8 +1,13 @@
 #ifndef ganhou_h
 #define ganhou_h
 
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <list>
+#include "ResourcePath.hpp"
+
+using namespace std;
 
 class Ganhou
 {

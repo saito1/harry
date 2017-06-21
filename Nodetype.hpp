@@ -1,7 +1,13 @@
 #ifndef NODETYPE_HPP
 #define NODETYPE_HPP
 
-#include "headers.h"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include "ResourcePath.hpp"
+#include "feitico.h"
+
+using namespace std;
 
 // Nó - Representa um elemento da lista
 
@@ -66,7 +72,7 @@ Nodetype::~Nodetype(){
 	cout << "GAME OVER NO DESTRUTOR DO ID = " << get_id() <<endl;
 }
 
-inline void Nodetype::carregar(std::string nomearquivo)
+void Nodetype::carregar(std::string nomearquivo)
 {
 	if (_imagem.loadFromFile(nomearquivo) == false)
 	{
@@ -81,13 +87,13 @@ inline void Nodetype::carregar(std::string nomearquivo)
 	}
 }
 
-inline void Nodetype::desenhar(sf::RenderWindow & renderWindow)
+void Nodetype::desenhar(sf::RenderWindow & renderWindow)
 {
 	if (carregou)
 		renderWindow.draw(_sprite);
 }
 
-inline bool Nodetype::colidiu(feitico& _feitico)
+bool Nodetype::colidiu(feitico& _feitico)
 {
 	if (_feitico.lancado == true)
 	{
@@ -103,28 +109,28 @@ inline bool Nodetype::colidiu(feitico& _feitico)
 	return false;
 }
 
-inline float Nodetype::get_x() const
+float Nodetype::get_x() const
 {
 	return _sprite.getPosition().x;
 }
 
-inline float Nodetype::get_y() const
+ float Nodetype::get_y() const
 {
 	return _sprite.getPosition().y;
 }
 
-inline void Nodetype::set_posicao(float x, float y)
+void Nodetype::set_posicao(float x, float y)
 {
 	if (carregou)
 		_sprite.setPosition(x, y);
 }
 
-inline void Nodetype::set_origem(float x, float y)
+void Nodetype::set_origem(float x, float y)
 {
 	_sprite.setOrigin(x, y);
 }
 
-inline sf::Rect<float> Nodetype::get_bounding_rect()
+sf::Rect<float> Nodetype::get_bounding_rect()
 {
 	sf::Vector2f position = _sprite.getPosition();
 
@@ -152,40 +158,48 @@ void Nodetype::set_id(int pid){
 		this->id = pid;
 }
 
+void Nodetype::set_tipo(int ptipo)
+{
+    this->tipo = ptipo;
+}
+
+int Nodetype::get_tipo() const
+{
+    return this->tipo;
+}
+
+void Nodetype::set_valor(int pvalor)
+{
+    this->valor = pvalor;
+}
+
+int Nodetype::get_valor() const
+{
+    return this->valor;
+}
+
 void Nodetype::ExibeInformacoes() const{
 	cout << "ID = " << get_id() << endl;
 	cout << "INFO = " << get_info() << endl;
-	cout << "NEXT = " << get_next() << endl;
+	cout << "NEXT = " << get_next()->get_info() << endl;
 	cout << "TIPO = " << get_tipo() << endl;
 	cout << "VALOR = " << get_valor() << endl;
 }
 
 void Nodetype::CopiaNode(Nodetype *original){
-	set_next(original->get_next());
-	set_id(original->get_id());
-	set_info(original->get_info());
-	set_tipo(original->get_tipo());
-	set_valor(original->get_valor());
+
+	this->set_next(original->get_next());
+   // cout << endl << endl << "NEXT = " << this->get_next()->get_info() << endl;
+	this->set_id(original->get_id());
+   // cout << "ID = " << this->get_id() << endl;
+	this->set_info(original->get_info());
+    //cout << "INFO = " << this->get_info() << endl;
+	this->set_tipo(original->get_tipo());
+   // cout << "TIPO = " << this->get_tipo() << endl;
+	this->set_valor(original->get_valor());
+    //cout << "VALOR = " << this->get_valor() << endl;
 }
 
-inline void Nodetype::set_tipo(int _tipo)
-{
-	this->tipo = _tipo;
-}
 
-inline int Nodetype::get_tipo() const
-{
-	return this->tipo;
-}
-
-inline void Nodetype::set_valor(int _valor)
-{
-	this->valor = _valor;
-}
-
-inline int Nodetype::get_valor() const
-{
-	return this->valor;
-}
 
 #endif

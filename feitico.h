@@ -1,7 +1,13 @@
 #ifndef FEITICO_H
 #define FEITICO_H
 
-#include "headers.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <iostream>
+#include <math.h>
+#include "ResourcePath.hpp"
+
+using namespace std;
 
 class feitico
 {
