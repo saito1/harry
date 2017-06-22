@@ -168,12 +168,15 @@ Nodetype* ListaSimples::PegaElementoAleatorio() const{
 	Nodetype *Paux;
 	Paux = P;
 	int r,i;
-	r = (rand() % (QuantidadeElementos()-1) + 1);
+    if(QuantidadeElementos()>1)
+        r = (rand() % (QuantidadeElementos()-1) + 1); //TA DANDO ERRO AQUI QUANDO CHEGA LA PRO NIVEL 5 OU 6, CONFERIR
+    else
+        r = 1;
 
 	for(i=1;i<r;i++){
 		Paux = Paux->get_next();
 	}
-
+    
 	return Paux;
 }
 

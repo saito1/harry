@@ -69,7 +69,7 @@ Nodetype::Nodetype(){
 }
 
 Nodetype::~Nodetype(){
-	cout << "GAME OVER NO DESTRUTOR DO ID = " << get_id() <<endl;
+	//cout << "GAME OVER NO DESTRUTOR DO ID = " << get_id() <<endl;
 }
 
 void Nodetype::carregar(std::string nomearquivo)

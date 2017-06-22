@@ -384,7 +384,7 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
         }
         case jogo::Mostrando_Transicao_Horcrux:
         {
-            mostrar_transicao_horcrux();
+            mostrar_transicao_horcrux(itensGanhar); // INSERI O PARAMETRO
             break;
         }
         case jogo::Ganhando:
@@ -452,6 +452,7 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
             
             
             verifica_colisao(hook, plano, itensGanhar, destruidos, todosItens);
+            
             janela.clear();
             janela.draw(background);
             hook->desenhar(janela);
@@ -668,7 +669,7 @@ void jogo::mostrar_transicao()
     estado_jogo = jogo::Nova_Fase;
 }
                        
-void jogo::mostrar_transicao_horcrux()
+void jogo::mostrar_transicao_horcrux(ItensGanhar* itensGanhar)
 {
     transicao_horcrux _transicao_horcrux;
     _transicao_horcrux.Mostrar(janela);

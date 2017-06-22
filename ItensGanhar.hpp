@@ -57,6 +57,7 @@ void ItensGanhar::ProcuraRemove(string info, bool &DeuCerto, ItensGanhar *destru
 //    }
 //    
 //    destruidos->ExibeLista();
+    
 }
 
 #endif /* ItensGanhar_hpp */
