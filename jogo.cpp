@@ -436,6 +436,7 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
             {
                 if (verifica_passou())
                 {
+                    cout << "VERIFICANDO" << verifica_passou() << endl;
                     if(itensGanhar->QuantidadeElementos() != 6)
                         estado_jogo = jogo::Mostrando_Transicao_Horcrux;
                     else
@@ -457,7 +458,7 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
             janela.draw(background);
             hook->desenhar(janela);
             hook->update_todos();
-            desenha_todos_plano(plano, janela);
+            plano->desenha_todos_plano(janela);
             janela.draw(botao_pausar);
             janela.draw(botao_sair);
             janela.draw(nivelText);
@@ -577,6 +578,7 @@ bool jogo::verifica_passou()
     {
         return true;
     }
+    return false;
 }
 
 
@@ -587,20 +589,20 @@ bool jogo::verifica_passou()
 
 
 
-void jogo::desenha_todos_plano(Plano* plano, sf::RenderWindow& window)
-{
-    Nodetype *Paux;
-    if (plano->QuantidadeElementos() > 0)
-        Paux = plano->PegaElementoN(1);
-    else
-        Paux = NULL;
-    
-    while (Paux != NULL) 
-    {
-        Paux->desenhar(window);
-        Paux = Paux->get_next();
-    }
-}
+//void jogo::desenha_todos_plano(Plano* plano, sf::RenderWindow& window)
+//{
+//    Nodetype *Paux;
+//    if (plano->QuantidadeElementos() > 0)
+//        Paux = plano->PegaElementoN(1);
+//    else
+//        Paux = NULL;
+//    
+//    while (Paux != NULL) 
+//    {
+//        Paux->desenhar(window);
+//        Paux = Paux->get_next();
+//    }
+//}
 
 void jogo::verifica_colisao(varinha* hook, Plano* plano, ItensGanhar* itensGanhar, ItensGanhar* destruidos, ListaSimples* todosItens)
 {

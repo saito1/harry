@@ -11,6 +11,7 @@ public:
     Plano();
     ~Plano();
     void InsereNplano(int n, ListaSimples * listaGeral, ItensGanhar *itensGanhar);
+    void desenha_todos_plano(sf::RenderWindow& window);
 };
 
 #endif /* Plano_hpp */
@@ -152,4 +153,20 @@ void Plano::InsereNplano(int n, ListaSimples * listaGeral, ItensGanhar *itensGan
     //    maisI += qtd;
     //    
     //    cout << "restantes = " << restantes << endl;
+}
+
+
+void Plano::desenha_todos_plano(sf::RenderWindow& window)
+{
+    Nodetype *Paux;
+    if (QuantidadeElementos() > 0)
+        Paux = PegaElementoN(1);
+    else
+        Paux = NULL;
+    
+    while (Paux != NULL)
+    {
+        Paux->desenhar(window);
+        Paux = Paux->get_next();
+    }
 }

@@ -27,10 +27,6 @@ public:
 void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGanhar* destruidos)
 {
     
-    
-    cout << endl << endl << "TO AQUI NO TRANSICAO E TENHO " << endl << endl;
-    destruidos->ExibeLista();
-    
     int i, j;
     Nodetype *Paux;
     sf::Texture imagem;
@@ -64,7 +60,6 @@ void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGa
             j += 100;
         }
         Paux->desenhar(renderWindow); 
-        cout << endl << " ERA PRA EU TER DESENHADO " << Paux->get_info() << endl;
         Paux = Paux->get_next();
     }
     

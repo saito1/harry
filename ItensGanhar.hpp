@@ -44,16 +44,14 @@ void ItensGanhar::ProcuraRemove(string info, bool &DeuCerto, ItensGanhar *destru
     
     Nodetype *no, *noPtr = new Nodetype();
     no = todosItens->PegaElementoInfo(info, DeuCerto);
-    no -> ExibeInformacoes();
     noPtr->CopiaNode(no);
     noPtr->set_id(destruidos->QuantidadeElementos()+1);
     noPtr->carregar(noPtr->get_info());
-    noPtr->ExibeInformacoes();
     
     ListaSimples::ProcuraRemove(info,DeuCerto);
     if(DeuCerto){
         destruidos->Insere(noPtr);
-    }    
+    }
 }
 
 #endif /* ItensGanhar_hpp */

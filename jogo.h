@@ -56,7 +56,7 @@ private:
     static void InicializaItensGanhar(ItensGanhar* itensGanhar, ListaSimples *listaGeral);
     static bool VerificaGanhou(ItensGanhar* itensGanhar);
     static bool verifica_passou();
-    static void desenha_todos_plano(Plano* plano, sf::RenderWindow& window);
+    //static void desenha_todos_plano(Plano* plano, sf::RenderWindow& window);
     static void verifica_colisao(varinha*, Plano* plano, ItensGanhar* itensGanhar, ItensGanhar* destruidos, ListaSimples* todosItens);
     
     enum GameState {
