@@ -237,18 +237,16 @@ Nodetype* ListaSimples::PegaElementoInfo(string info, bool &DeuCerto) {
 
     else if (P->get_info() == info) {
         DeuCerto = true;
-        Paux = P;
-        P = P->get_next();
-        return Paux;
+        return P;
     }
     else {
         Paux = P;
-        while ((Paux->get_next()->get_info() != info) && (Paux->get_next() != NULL)) {
+        while ((Paux->get_next() != NULL) && (Paux->get_next()->get_info() != info)) {
             Paux = Paux->get_next();
         }
         if (Paux->get_next() != NULL) {
             DeuCerto = true;
-            return Paux;
+            return Paux->get_next();
         }
         else{
             DeuCerto = false;

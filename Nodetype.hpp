@@ -89,7 +89,7 @@ void Nodetype::carregar(std::string nomearquivo)
 
 void Nodetype::desenhar(sf::RenderWindow & renderWindow)
 {
-	if (carregou)
+    if (carregou)
 		renderWindow.draw(_sprite);
 }
 

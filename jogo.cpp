@@ -48,10 +48,11 @@ void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* t
     imagem.loadFromFile(resourcePath() + "fundo2.jpg");
     background.setTexture(imagem); //DEFINE O BACKGROUND
     
-    //Resetando plano
+    //Resetando as listas
     plano->DeletaTudo();
+    itensGanhar->DeletaTudo();
+    destruidos->DeletaTudo();
     
- 
     itensGanhar->InicializaItensGanhar(todosItens);  // INICIALIZANDO ITENS GANHAR
     plano->InsereNplano(20, todosItens, itensGanhar); // INICIALIZANDO O PLANO
     
@@ -113,8 +114,7 @@ void jogo::CriandoTudo()
     *dementador = new Nodetype(), *diadema = new Nodetype(), *diario = new Nodetype(), *dobby = new Nodetype(), *dolores = new Nodetype(), *draco = new Nodetype(),
     *dumbledore = new Nodetype(), *felix = new Nodetype(), *hagrid = new Nodetype(), *hermione = new Nodetype(), *livro = new Nodetype(), *lucius = new Nodetype(),
     *medalhao = new Nodetype(), *minerva = new Nodetype(), *nagini = new Nodetype(), *pomo = new Nodetype(), *ron = new Nodetype(), *snape = new Nodetype(),
-    *taca = new Nodetype(), *voldemort = new Nodetype(), *horcrux1 = new Nodetype(), *horcrux2 = new Nodetype(), *horcrux3 = new Nodetype(), *horcrux4 = new Nodetype(),
-    *horcrux5 = new Nodetype(), *horcrux6 = new Nodetype();
+    *taca = new Nodetype(), *voldemort = new Nodetype();
     
     srand(time(NULL));
     
@@ -384,7 +384,7 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
         }
         case jogo::Mostrando_Transicao_Horcrux:
         {
-            mostrar_transicao_horcrux(itensGanhar); // INSERI O PARAMETRO
+            mostrar_transicao_horcrux(destruidos);
             break;
         }
         case jogo::Ganhando:
@@ -676,10 +676,10 @@ void jogo::mostrar_transicao()
     estado_jogo = jogo::Nova_Fase;
 }
                        
-void jogo::mostrar_transicao_horcrux(ItensGanhar* itensGanhar)
+void jogo::mostrar_transicao_horcrux(ItensGanhar* destruidos)
 {
     transicao_horcrux2 _transicao_horcrux;
-    _transicao_horcrux.MostrarHorcrux(janela, itensGanhar);
+    _transicao_horcrux.MostrarHorcrux(janela, destruidos);
     estado_jogo = jogo::Mostrando_Transicao_Passou;
 }
                        

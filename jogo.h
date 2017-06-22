@@ -47,7 +47,7 @@ private:
     static void mostrar_tela_inicial();
     static void mostrar_menu();
     static void mostrar_transicao();
-    static void mostrar_transicao_horcrux(ItensGanhar* itensGanhar);
+    static void mostrar_transicao_horcrux(ItensGanhar* destruidos);
     //static void mostrar_instrucao();
     static void mostrar_ganhou(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
     static void mostrar_perdeu(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);

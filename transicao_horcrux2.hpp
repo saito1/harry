@@ -20,12 +20,16 @@ using namespace std;
 
 class transicao_horcrux2{
 public:
-    void MostrarHorcrux(sf::RenderWindow& window, ItensGanhar* itensGanhar);
+    void MostrarHorcrux(sf::RenderWindow& window, ItensGanhar* destruidos);
 };
 
 
-void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGanhar* itensGanhar)
+void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGanhar* destruidos)
 {
+    
+    
+    cout << endl << endl << "TO AQUI NO TRANSICAO E TENHO " << endl << endl;
+    destruidos->ExibeLista();
     
     int i, j;
     Nodetype *Paux;
@@ -38,8 +42,8 @@ void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGa
     renderWindow.draw(sprite);
     
     
-    if (itensGanhar->QuantidadeElementos() > 0)
-        Paux = itensGanhar->PegaElementoN(1);
+    if (destruidos->QuantidadeElementos() > 0)
+        Paux = destruidos->PegaElementoN(1);
     
     else
         Paux = NULL;
@@ -59,13 +63,11 @@ void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGa
             Paux->set_posicao(125 + j, 265);
             j += 100;
         }
-        Paux->desenhar(renderWindow);
+        Paux->desenhar(renderWindow); 
+        cout << endl << " ERA PRA EU TER DESENHADO " << Paux->get_info() << endl;
         Paux = Paux->get_next();
     }
     
-    
-    
-
     renderWindow.display();
     
     sf::Clock clock;
