@@ -15,7 +15,7 @@ int jogo::total = 0;
 int jogo::meta = 0;
 int jogo::nivel = 1;
 
-void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
+void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
    
     
@@ -53,7 +53,7 @@ void jogo::Start(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSim
     
  
     itensGanhar->InicializaItensGanhar(todosItens);  // INICIALIZANDO ITENS GANHAR
-    InsereNplano(20, plano, todosItens, itensGanhar);
+    plano->InsereNplano(20, todosItens, itensGanhar); // INICIALIZANDO O PLANO
     
     
     estado_jogo = jogo::Mostrando_Tela_Inicial;
@@ -105,8 +105,9 @@ void jogo::CriandoTudo()
     
     varinha *hook = new varinha();
     
-    ListaSimples plano, todosItens;
+    ListaSimples todosItens;
     ItensGanhar itensGanhar, destruidos;
+    Plano plano;
     
     Nodetype *anel = new Nodetype(), *bellatrix = new Nodetype(), *calice = new Nodetype(), *chapeu = new Nodetype(), *comensal = new Nodetype(), *coruja = new Nodetype(),
     *dementador = new Nodetype(), *diadema = new Nodetype(), *diario = new Nodetype(), *dobby = new Nodetype(), *dolores = new Nodetype(), *draco = new Nodetype(),
@@ -124,48 +125,36 @@ void jogo::CriandoTudo()
     anel->set_tipo(3);
     anel->set_valor(1000);
     todosItens.Insere(anel);
-    //horcrux1->CopiaNode(anel);
-    //itensGanhar.Insere(horcrux1); // DEVERA SER NO START
     
     taca->set_id(2);
     taca->set_info(resourcePath() + "taca.png");
     taca->set_tipo(3);
     taca->set_valor(1000);
     todosItens.Insere(taca);
-    //horcrux2->CopiaNode(taca);
-    //itensGanhar.Insere(horcrux2);
     
     medalhao->set_id(3);
     medalhao->set_info(resourcePath() + "medalhao.png");
     medalhao->set_tipo(3);
     medalhao->set_valor(1000);
     todosItens.Insere(medalhao);
-    //horcrux3->CopiaNode(medalhao);
-   // itensGanhar.Insere(horcrux3);
     
     diadema->set_id(4);
     diadema->set_info(resourcePath() + "diadema.png");
     diadema->set_tipo(3);
     diadema->set_valor(1000);
     todosItens.Insere(diadema);
-    //horcrux4->CopiaNode(diadema);
-    //itensGanhar.Insere(horcrux4);
     
     diario->set_id(5);
     diario->set_info(resourcePath() + "diario.png");
     diario->set_tipo(3);
     diario->set_valor(1000);
     todosItens.Insere(diario);
-    //horcrux5->CopiaNode(diario);
-    //itensGanhar.Insere(horcrux5);
     
     nagini->set_id(6);
     nagini->set_info(resourcePath() + "nagini.png");
     nagini->set_tipo(3);
     nagini->set_valor(1000);
     todosItens.Insere(nagini);
-    //horcrux6->CopiaNode(nagini);
-    //itensGanhar.Insere(horcrux6);
     
     
     // INIMIGOS 7 a 13
@@ -304,13 +293,13 @@ void jogo::CriandoTudo()
 
 // LEMBRAR DE SETTAR O FEITICO PARA NAO LANCADO
 
-void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
+void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
     jogo::Start(hook, clock, plano, todosItens, itensGanhar, destruidos);
     estado_jogo = jogo::Jogando;
 }
                        
-void jogo::nova_fase(varinha * hook, sf::Clock & clock, ListaSimples * plano, ListaSimples * todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
+void jogo::nova_fase(varinha * hook, sf::Clock & clock, Plano* plano, ListaSimples * todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
     {
     //GAME CLOCK & TOTAL
     countdown = 30 + (nivel * 5);
@@ -342,9 +331,11 @@ void jogo::nova_fase(varinha * hook, sf::Clock & clock, ListaSimples * plano, Li
     //   return;
         
     plano->DeletaTudo();
-    InsereNplano(20, plano, todosItens, itensGanhar);
+    plano->InsereNplano(20, todosItens, itensGanhar);
         
     estado_jogo = jogo::Jogando;
+    feitico::lancado = false;
+    
         
     while (!IsExiting())
     {
@@ -362,7 +353,7 @@ bool jogo::IsExiting()
         return false;
 }
 
-void jogo::loop_jogo(varinha* hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
+void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
     switch (estado_jogo)
     {
@@ -537,7 +528,7 @@ void jogo::mostrar_tela_inicial()
     estado_jogo = jogo::Mostrando_Menu;
 }
 
-void jogo::mostrar_ganhou(varinha *hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
+void jogo::mostrar_ganhou(varinha *hook, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
     Ganhou ganhou;
     Ganhou::ganhou resultado = ganhou.Mostrar(janela);
@@ -552,7 +543,7 @@ void jogo::mostrar_ganhou(varinha *hook, sf::Clock & clock, ListaSimples* plano,
     }
 }
 
-void jogo::mostrar_perdeu(varinha *hook, sf::Clock & clock, ListaSimples* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
+void jogo::mostrar_perdeu(varinha *hook, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
     Perdeu perdeu;
     Perdeu::perdeu resultado = perdeu.Mostrar(janela);
@@ -566,139 +557,6 @@ void jogo::mostrar_perdeu(varinha *hook, sf::Clock & clock, ListaSimples* plano,
             break;
     }
 }
-
-
-
-void jogo::InsereNplano(int n, ListaSimples * plano, ListaSimples * listaGeral, ItensGanhar *itensGanhar)
-{
-    int i, x, y, qtd = 0, r;
-   // int restantes = n, qtd, maisI;
-    Nodetype *no;
-    Nodetype *noPtr;
-    
-    // 33% de chance de ter 1 horcrux na fase e 66% de chance de nao ter nenhuma (pode ser alterado, apenas mudando o 2 ali)
-    //r = (rand() % 2); // DESCOMENTAR ESSE;
-    r = 0; // MUDAR ISSO DEPOIS
-    if(r==0){
-        // Inserindo horcrux
-        no = itensGanhar->PegaElementoAleatorio();
-        noPtr = new Nodetype();
-        noPtr->CopiaNode(no);
-        noPtr->set_id(0);
-        noPtr->carregar(noPtr->get_info());
-        x = (rand() % 919);
-        y = (rand() % 300 + 321);
-        noPtr->set_posicao(x, y);
-        noPtr->set_origem(noPtr->_sprite.getLocalBounds().width/2, noPtr->_sprite.getLocalBounds().height/2);
-        
-        plano->Insere(noPtr);
-        qtd = 1;
-    }
-
-    for (i = qtd; i<n; i++)
-    {
-        no = listaGeral->PegaElementoAleatorioTodosTipoX(5);
-        noPtr = new Nodetype();
-        noPtr->CopiaNode(no);
-        noPtr->set_id(i);
-        noPtr->carregar(noPtr->get_info());
-        x = (rand() % 919);
-        y = (rand() % 300 + 321);
-        noPtr->set_posicao(x, y);
-        noPtr->set_origem(noPtr->_sprite.getLocalBounds().width/2, noPtr->_sprite.getLocalBounds().height/2);
-        
-        plano->Insere(noPtr);
-    }
-    
-
-//    // QUERIA ESCOLHER A QUANTIDADE CERTA DE CADA COISA, MAS ESTAVA DANDO ERRADO
-//    //Inserindo horcrux
-//    cout << "HORCRUX " << endl;
-//    qtd = 1;
-//    no = listaGeral->PegaElementoAleatorioTodosTipoX(3);
-//     cout << " Elemento = " << no->get_id()<< endl;
-//    noPtr = new Nodetype();
-//    noPtr->CopiaNode(no);
-//    noPtr->set_id(0);
-//    noPtr->carregar(noPtr->get_info());
-//    x = (rand() % 919);
-//    y = (rand() % 300 + 321);
-//    noPtr->set_posicao(x, y);
-//    noPtr->set_origem(noPtr->_sprite.getLocalBounds().width/2, noPtr->_sprite.getLocalBounds().height/2);
-//    
-//    //plano->Insere(noPtr);
-//    restantes -= qtd;
-//    
-//    maisI = 1;
-//
-//    
-//    
-//    //Inserindo ITENS
-//    qtd = restantes/2;
-//    cout << "Primeiro qtd = " << qtd << endl;
-//    for (i = 0; i<qtd; i++)
-//        {
-//            no = listaGeral->PegaElementoAleatorioTodosTipoX(4);
-//            cout << "i = " << i << " Elemento = " << no->get_id()<< endl;
-//            noPtr = new Nodetype();
-//            noPtr->CopiaNode(no);
-//            noPtr->set_id(i+maisI);
-//            noPtr->carregar(noPtr->get_info());
-//            x = (rand() % 919);
-//            y = (rand() % 300 + 321);
-//            noPtr->set_posicao(x, y);
-//            noPtr->set_origem(noPtr->_sprite.getLocalBounds().width/2, noPtr->_sprite.getLocalBounds().height/2);
-//            
-//            cout << "AAAA" << endl;
-//            //plano->Insere(noPtr);
-//        }
-//    restantes-=qtd;
-//    
-//    maisI += qtd;
-//    
-//    cout << "TERMINEI PRIMEIRO FOR" << endl;
-//    //Inserindo INIMIGOS
-//    qtd = restantes/2;
-//    for (i = 0; i<qtd; i++)
-//    {
-//        no = listaGeral->PegaElementoAleatorioTodosTipoX(1);
-//        noPtr = new Nodetype();
-//        noPtr->CopiaNode(no);
-//        noPtr->set_id(i+maisI);
-//        noPtr->carregar(noPtr->get_info());
-//        x = (rand() % 919);
-//        y = (rand() % 300 + 321);
-//        noPtr->set_posicao(x, y);
-//        noPtr->set_origem(noPtr->_sprite.getLocalBounds().width/2, noPtr->_sprite.getLocalBounds().height/2);
-//        
-//       // plano->Insere(noPtr);
-//    }
-//    restantes-=qtd;
-//    
-//    maisI += qtd;
-//    
-//    //Inserindo AMIGOS
-//    qtd = restantes;
-//    for (i = 0; i<qtd; i++)
-//    {
-//        no = listaGeral->PegaElementoAleatorioTodosTipoX(2);
-//        noPtr = new Nodetype();
-//        noPtr->CopiaNode(no);
-//        noPtr->set_id(i+maisI);
-//        noPtr->carregar(noPtr->get_info());
-//        x = (rand() % 919);
-//        y = (rand() % 300 + 321);
-//        noPtr->set_posicao(x, y);
-//        noPtr->set_origem(noPtr->_sprite.getLocalBounds().width/2, noPtr->_sprite.getLocalBounds().height/2);
-//        
-//       // plano->Insere(noPtr);
-//    }
-//    restantes-=qtd;
-//    maisI += qtd;
-//    
-//    cout << "restantes = " << restantes << endl;
- }
-
 
 bool jogo::VerificaGanhou(ItensGanhar* itensGanhar)
 {
@@ -719,8 +577,9 @@ bool jogo::verifica_passou()
         return true;
     }
 }
-                       
-void jogo::desenha_todos_plano(ListaSimples * plano, sf::RenderWindow& window)
+
+
+void jogo::desenha_todos_plano(Plano* plano, sf::RenderWindow& window)
 {
     Nodetype *Paux;
     if (plano->QuantidadeElementos() > 0)
@@ -735,7 +594,7 @@ void jogo::desenha_todos_plano(ListaSimples * plano, sf::RenderWindow& window)
     }
 }
 
-void jogo::verifica_colisao(varinha* hook, ListaSimples * plano, ItensGanhar* itensGanhar, ItensGanhar* destruidos, ListaSimples* todosItens)
+void jogo::verifica_colisao(varinha* hook, Plano* plano, ItensGanhar* itensGanhar, ItensGanhar* destruidos, ListaSimples* todosItens)
 {
     Nodetype *Paux;
     bool ok = false;
