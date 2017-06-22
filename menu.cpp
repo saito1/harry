@@ -29,10 +29,10 @@ Menu::menu_inicial Menu::Mostrar(sf::RenderWindow& window)
     
     //Coordenadas do botao INSTRUCOES
     Item_Menu botao_instrucoes;
-    botao_instrucoes.rect.top = 280;
-    botao_instrucoes.rect.height = 340;
-    botao_instrucoes.rect.left = 40;
-    botao_instrucoes.rect.width = 440;
+    botao_instrucoes.rect.top = 330;
+    botao_instrucoes.rect.height = 430;
+    botao_instrucoes.rect.left = 330;
+    botao_instrucoes.rect.width = 720;
     botao_instrucoes.action = Instrucoes;
     
     itens_menu.push_back(botao_jogar);

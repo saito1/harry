@@ -49,14 +49,14 @@ void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGa
     
     while (Paux != NULL)
     {
-        if(Paux->get_id() % 2 == 0)
+        if(Paux->get_id() % 2 != 0)
         {
-            Paux->set_posicao(125 + i, 145);
+            Paux->set_posicao(80 + i, 110);
             i += 100;
         }
         else
         {
-            Paux->set_posicao(125 + j, 265);
+            Paux->set_posicao(80 + j, 220);
             j += 100;
         }
         Paux->desenhar(renderWindow); 

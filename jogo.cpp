@@ -14,6 +14,13 @@ int jogo::countdown = 30;
 int jogo::total = 0;
 int jogo::meta = 0;
 int jogo::nivel = 1;
+bool jogo::voldemort_morreu = 0;
+
+
+
+// SET MET DEU ERRADO, JOGAR FEITICO SETTAR DE NOVO QDO INICIA
+
+
 
 void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
@@ -302,8 +309,8 @@ void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, Plano* plano, ListaS
 void jogo::nova_fase(varinha * hook, sf::Clock & clock, Plano* plano, ListaSimples * todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
     {
     //GAME CLOCK & TOTAL
-    countdown = 30 + (nivel * 5);
-    meta += 650 + (total/2);
+    countdown = 30;
+    meta += 1000;
     nivel += 1;
         
     //convert countdown to a string
@@ -320,15 +327,6 @@ void jogo::nova_fase(varinha * hook, sf::Clock & clock, Plano* plano, ListaSimpl
         
     //LOAD FONT AND TEXT
     metaText.setString("$ " + to_string(meta));
-        
-    //OLHAR ISSO DIREITO
-        
-    //    //Inicializando itensGanhar
-    //    InicializaItensGanhar(itensGanhar, todosItens);
-    //
-    //    itensGanhar->ExibeLista();
-    //if (estado_jogo != Inicializado)
-    //   return;
         
     plano->DeletaTudo();
     plano->InsereNplano(20, todosItens, itensGanhar);
@@ -374,12 +372,12 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
         }
         case jogo::Mostrando_Instrucao:
         {
-            //mostrar_instrucao();
+            mostrar_instrucao();
             break;
         }
         case jogo::Mostrando_Transicao_Passou:
         {
-            mostrar_transicao();
+            mostrar_transicao(destruidos);
             break;
         }
         case jogo::Mostrando_Transicao_Horcrux:
@@ -436,7 +434,6 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
             {
                 if (verifica_passou())
                 {
-                    cout << "VERIFICANDO" << verifica_passou() << endl;
                     if(itensGanhar->QuantidadeElementos() != 6)
                         estado_jogo = jogo::Mostrando_Transicao_Horcrux;
                     else
@@ -447,10 +444,7 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
             }
             
             if (VerificaGanhou(itensGanhar))
-                estado_jogo = jogo::Ganhando;
-            
-            
-            
+                estado_jogo = jogo::Mostrando_Transicao_Horcrux;
             
             verifica_colisao(hook, plano, itensGanhar, destruidos, todosItens);
             
@@ -581,29 +575,6 @@ bool jogo::verifica_passou()
     return false;
 }
 
-
-
-
-
-// PODE SER UMA FUNCAO DO PLANO
-
-
-
-//void jogo::desenha_todos_plano(Plano* plano, sf::RenderWindow& window)
-//{
-//    Nodetype *Paux;
-//    if (plano->QuantidadeElementos() > 0)
-//        Paux = plano->PegaElementoN(1);
-//    else
-//        Paux = NULL;
-//    
-//    while (Paux != NULL) 
-//    {
-//        Paux->desenhar(window);
-//        Paux = Paux->get_next();
-//    }
-//}
-
 void jogo::verifica_colisao(varinha* hook, Plano* plano, ItensGanhar* itensGanhar, ItensGanhar* destruidos, ListaSimples* todosItens)
 {
     Nodetype *Paux;
@@ -665,15 +636,24 @@ void jogo::mostrar_menu()
         case Menu::Jogar:
             estado_jogo = jogo::Jogando;
             break;
-            /*case Menu::Instrucoes:
-             estado_jogo = jogo::Mostrando_Instrucao;*/
+        case Menu::Instrucoes:
+            estado_jogo = jogo::Mostrando_Instrucao;
+            break;
     }
 }
                        
-void jogo::mostrar_transicao()
+void jogo::mostrar_transicao(ItensGanhar* destruidos)
 {
     transicao_passou _transicao_passou;
-    _transicao_passou.set_meta(meta + (total/2));
+    _transicao_passou.set_meta(meta + 1000);
+//    if(voldemort_morreu)
+//        _transicao_passou.Mostrar
+    
+    // INSERIR AQUI O DEPOIS QUE O HARRY GANHAR
+    
+    if (destruidos->QuantidadeElementos()==6){
+        _transicao_passou.MostrarHarry(janela);
+    }
     _transicao_passou.Mostrar(janela);
     estado_jogo = jogo::Nova_Fase;
 }
@@ -684,6 +664,38 @@ void jogo::mostrar_transicao_horcrux(ItensGanhar* destruidos)
     _transicao_horcrux.MostrarHorcrux(janela, destruidos);
     estado_jogo = jogo::Mostrando_Transicao_Passou;
 }
+
+void jogo::mostrar_instrucao()
+{
+    Instrucoes instrucao;
+    instrucao.set_k(1);
+    int continua = 1;
+    while (continua == 1) {
+        Instrucoes::instrucoes_opcoes resultado = instrucao.Mostrar(janela);
+        switch (resultado)
+        {
+            case Instrucoes::Menu:
+                estado_jogo = jogo::Mostrando_Menu;
+                continua = 0;
+                break;
+            case Instrucoes::Jogar:
+                estado_jogo = jogo::Jogando;
+                continua = 0;
+                break;
+            case Instrucoes::Sair:
+                estado_jogo = jogo::Saindo;
+                continua = 0;
+                break;
+            case Instrucoes::Proximo:
+                instrucao.proximo_k();
+                break;
+            case Instrucoes::Anterior:
+                instrucao.anterior_k();
+                break;
+        }
+    }
+}
+
                        
 int main(int argc, char** argv)
 {

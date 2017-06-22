@@ -27,6 +27,7 @@
 #include "transicao_horcrux2.hpp"
 #include "ItensGanhar.hpp"
 #include "Plano.hpp"
+#include "instrucoes.h"
 
 #include "ResourcePath.hpp"
 
@@ -46,17 +47,15 @@ private:
     
     static void mostrar_tela_inicial();
     static void mostrar_menu();
-    static void mostrar_transicao();
+    static void mostrar_transicao(ItensGanhar* destruidos);
     static void mostrar_transicao_horcrux(ItensGanhar* destruidos);
-    //static void mostrar_instrucao();
+    static void mostrar_instrucao();
     static void mostrar_ganhou(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
     static void mostrar_perdeu(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
-    
-    //static void InsereNplano(int n, Plano* plano, ListaSimples *listaGeral, ItensGanhar* itensGanhar);
+  
     static void InicializaItensGanhar(ItensGanhar* itensGanhar, ListaSimples *listaGeral);
     static bool VerificaGanhou(ItensGanhar* itensGanhar);
     static bool verifica_passou();
-    //static void desenha_todos_plano(Plano* plano, sf::RenderWindow& window);
     static void verifica_colisao(varinha*, Plano* plano, ItensGanhar* itensGanhar, ItensGanhar* destruidos, ListaSimples* todosItens);
     
     enum GameState {
@@ -74,5 +73,6 @@ private:
     static int total;
     static int meta;
     static int nivel;
+    static bool voldemort_morreu;
 };
 #endif // !JOGO_H

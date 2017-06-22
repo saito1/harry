@@ -13,7 +13,8 @@ class transicao_passou
 public:
 	transicao_passou();
 
-	void Mostrar(sf::RenderWindow& window);
+	void Mostrar(sf::RenderWindow& renderWindow);
+    void MostrarHarry(sf::RenderWindow& renderWindow);
 	void set_meta(int meta);
 	int get_meta() const;
 
