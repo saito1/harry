@@ -580,6 +580,13 @@ bool jogo::verifica_passou()
 }
 
 
+
+
+
+// PODE SER UMA FUNCAO DO PLANO
+
+
+
 void jogo::desenha_todos_plano(Plano* plano, sf::RenderWindow& window)
 {
     Nodetype *Paux;
@@ -671,8 +678,8 @@ void jogo::mostrar_transicao()
                        
 void jogo::mostrar_transicao_horcrux(ItensGanhar* itensGanhar)
 {
-    transicao_horcrux _transicao_horcrux;
-    _transicao_horcrux.Mostrar(janela);
+    transicao_horcrux2 _transicao_horcrux;
+    _transicao_horcrux.MostrarHorcrux(janela, itensGanhar);
     estado_jogo = jogo::Mostrando_Transicao_Passou;
 }
                        

@@ -24,7 +24,7 @@
 #include "ListaSimples.hpp"
 #include "Nodetype.hpp"
 #include "transicao_passou.h"
-#include "transicao_horcrux.h"
+#include "transicao_horcrux2.hpp"
 #include "ItensGanhar.hpp"
 #include "Plano.hpp"
 
