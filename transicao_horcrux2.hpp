@@ -61,8 +61,7 @@ void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGa
         Paux->desenhar(renderWindow); 
         Paux = Paux->get_next();
     }
-    
-	feitico::lancado = false;
+
     renderWindow.display();
     
     sf::Clock clock;

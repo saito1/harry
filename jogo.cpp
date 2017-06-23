@@ -15,6 +15,7 @@ int jogo::total = 0;
 int jogo::meta = 0;
 int jogo::nivel = 1;
 bool jogo::voldemort_morreu = false;
+bool jogo::to_na_transicao = false;
 
 // FEITICO AINDA SENDO LANCADO NA TRANSICAO
 
@@ -26,6 +27,8 @@ void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* t
     meta = 650;
     nivel = 1;
 	voldemort_morreu = false;
+	feitico::lancado = false;
+	to_na_transicao = false;
 	    
     //convert countdown to a string
     string countdownString = "00:" + to_string(countdown);
@@ -52,7 +55,6 @@ void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* t
     destruidos->DeletaTudo();
     
     itensGanhar->InicializaItensGanhar(todosItens);  // INICIALIZANDO ITENS GANHAR
-	feitico::lancado = false;
     plano->InsereNplano(20, todosItens, itensGanhar); // INICIALIZANDO O PLANO
     
     
@@ -323,12 +325,10 @@ void jogo::nova_fase(varinha * hook, sf::Clock & clock, Plano* plano, ListaSimpl
     metaText.setString("$ " + to_string(meta));
         
     plano->DeletaTudo();
-	feitico::lancado = false;
     plano->InsereNplano(20, todosItens, itensGanhar);
-        
-    estado_jogo = jogo::Jogando;
-   
     
+    estado_jogo = jogo::Jogando;
+	
     while (!IsExiting())
     {
         loop_jogo(hook, clock, plano, todosItens, itensGanhar, destruidos);
@@ -357,7 +357,6 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
         case jogo::Nova_Fase:
         {
             nova_fase(hook, clock, plano, todosItens, itensGanhar, destruidos);
-			feitico::lancado = false;
             break;
         }
         case jogo::Mostrando_Tela_Inicial:
@@ -372,20 +371,19 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
         }
         case jogo::Mostrando_Transicao_Passou:
 		{
+			to_na_transicao = true;
             mostrar_transicao(destruidos);
-			feitico::lancado = false;
             break;
         }
         case jogo::Mostrando_Transicao_Horcrux:
         {
+			to_na_transicao = true;
             mostrar_transicao_horcrux(destruidos);
-			feitico::lancado = false;
             break;
         }
 		case jogo::Fase_Final:
 		{
 			mostrar_fase_final(hook, clock, plano, todosItens, itensGanhar, destruidos);
-			feitico::lancado = false;
 			break;
 		}
         case jogo::Ganhando:
@@ -470,6 +468,13 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
             
             while (janela.pollEvent(evento_atual))
             {
+
+				if (to_na_transicao == true) 
+				{
+					evento_atual.key.code = sf::Keyboard::R; //Impede lancar feitico durante transicao
+					to_na_transicao = false;
+				}
+
                 switch (evento_atual.type)
                 {
                     case sf::Event::Closed:
@@ -478,11 +483,15 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
                     case sf::Event::KeyPressed:
                         if (evento_atual.key.code == sf::Keyboard::Escape)
 							estado_jogo = jogo::Mostrando_Menu;
-                        else if(evento_atual.key.code == sf::Keyboard::F && feitico::lancado == false){
+                        else if(evento_atual.key.code == sf::Keyboard::F && feitico::lancado == false && to_na_transicao == false)
+						{
+							cout << "countdown " << countdown << endl;
                             varinha::_estado_varinha = varinha::Bombarda;
                             feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
                         }
-                        else if(evento_atual.key.code == sf::Keyboard::J && feitico::lancado == false){
+                        else if(evento_atual.key.code == sf::Keyboard::J && feitico::lancado == false && to_na_transicao == false)
+						{
+							cout << "countdown " << countdown << endl;
                             varinha::_estado_varinha = varinha::Accio;
                             feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
                         }
@@ -668,7 +677,6 @@ void jogo::mostrar_transicao(ItensGanhar* destruidos)
 	else
 	{
 		_transicao_passou.Mostrar(janela);
-		feitico::lancado = false;
 		estado_jogo = jogo::Nova_Fase;
 	}	
 }
@@ -738,7 +746,6 @@ void jogo::mostrar_fase_final(varinha* hook, sf::Clock & clock, Plano* plano, Li
 	plano->InsereFaseFinal(todosItens);
 
 	estado_jogo = jogo::Jogando;
-	feitico::lancado = false;
 
 	while (!IsExiting())
 	{

@@ -54,7 +54,6 @@ private:
     static void mostrar_ganhou(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
     static void mostrar_perdeu(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
   
-    static void InicializaItensGanhar(ItensGanhar* itensGanhar, ListaSimples *listaGeral);
     static bool VerificaGanhou(ItensGanhar* itensGanhar);
     static bool verifica_passou();
     static void verifica_colisao(varinha*, Plano* plano, ItensGanhar* itensGanhar, ItensGanhar* destruidos, ListaSimples* todosItens);
@@ -75,5 +74,6 @@ private:
     static int meta;
     static int nivel;
     static bool voldemort_morreu;
+	static bool to_na_transicao;
 };
 #endif // !JOGO_H

@@ -25,7 +25,6 @@ void transicao_passou::Mostrar(sf::RenderWindow & renderWindow)
 	sf::Sprite sprite;
 	sprite.setTexture(imagem);
 
-	feitico::lancado = false;
 	renderWindow.draw(sprite);
 	renderWindow.draw(metaText);
 	renderWindow.display();
@@ -50,7 +49,6 @@ void transicao_passou::MostrarHarry(sf::RenderWindow& renderWindow){
     sf::Sprite sprite;
     sprite.setTexture(imagem);
     
-	feitico::lancado = false;
     renderWindow.draw(sprite);
     renderWindow.display();
     
