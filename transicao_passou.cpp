@@ -64,6 +64,55 @@ void transicao_passou::MostrarHarry(sf::RenderWindow& renderWindow){
     }
 }
 
+void transicao_passou::MostarHarryMorrendo(sf::RenderWindow & renderWindow)
+{
+	sf::Texture imagem;
+	if (imagem.loadFromFile("imagens/transicao4.jpg") != true)
+		return;
+
+	sf::Sprite sprite;
+	sprite.setTexture(imagem);
+
+	renderWindow.draw(sprite);
+	renderWindow.display();
+
+	sf::Clock clock;
+
+
+	while (true)
+	{
+		if (clock.getElapsedTime().asSeconds() > 3)
+		{
+			return;
+		}
+	}
+}
+
+void transicao_passou::MostrarBatalhaFinal(sf::RenderWindow & renderWindow)
+{
+	sf::Texture imagem;
+	if (imagem.loadFromFile("imagens/transicao5.jpg") != true)
+		return;
+
+	sf::Sprite sprite;
+	sprite.setTexture(imagem);
+
+	renderWindow.draw(sprite);
+	renderWindow.display();
+
+	sf::Clock clock;
+
+
+	while (true)
+	{
+		if (clock.getElapsedTime().asSeconds() > 3)
+		{
+			return;
+		}
+	}
+}
+
+
 
 void transicao_passou::set_meta(int meta)
 {

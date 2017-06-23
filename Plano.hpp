@@ -41,9 +41,9 @@ void Plano::InsereNplano(int n, ListaSimples * listaGeral, ItensGanhar *itensGan
     Nodetype *no;
     Nodetype *noPtr;
     
-    // 33% de chance de ter 1 horcrux na fase e 66% de chance de nao ter nenhuma (pode ser alterado, apenas mudando o 2 ali)
-    //r = (rand() % 2); // DESCOMENTAR ESSE;
-    r = 0; // MUDAR ISSO DEPOIS
+    // 50% de chance de ter 1 horcrux na fase e 50% de chance de nao ter nenhuma (pode ser alterado, apenas mudando o 2 ali)
+	r = (rand() % 2);
+	cout << r << endl;
     if(r==0){
         // Inserindo horcrux
         no = itensGanhar->PegaElementoAleatorio();

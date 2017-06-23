@@ -15,6 +15,8 @@ public:
 
 	void Mostrar(sf::RenderWindow& renderWindow);
     void MostrarHarry(sf::RenderWindow& renderWindow);
+	void MostarHarryMorrendo(sf::RenderWindow& renderWindow);
+	void MostrarBatalhaFinal(sf::RenderWindow& renderWindow);
 	void set_meta(int meta);
 	int get_meta() const;
 

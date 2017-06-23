@@ -465,14 +465,15 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
             janela.draw(metaText);
             janela.draw(totalText);
             janela.display();
+
+		
             
             while (janela.pollEvent(evento_atual))
             {
 
-				if (to_na_transicao == true) 
+				if (to_na_transicao == true)
 				{
 					evento_atual.key.code = sf::Keyboard::R; //Impede lancar feitico durante transicao
-					to_na_transicao = false;
 				}
 
                 switch (evento_atual.type)
@@ -483,15 +484,13 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
                     case sf::Event::KeyPressed:
                         if (evento_atual.key.code == sf::Keyboard::Escape)
 							estado_jogo = jogo::Mostrando_Menu;
-                        else if(evento_atual.key.code == sf::Keyboard::F && feitico::lancado == false && to_na_transicao == false)
+                        else if(evento_atual.key.code == sf::Keyboard::F && feitico::lancado == false)
 						{
-							cout << "countdown " << countdown << endl;
                             varinha::_estado_varinha = varinha::Bombarda;
                             feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
                         }
-                        else if(evento_atual.key.code == sf::Keyboard::J && feitico::lancado == false && to_na_transicao == false)
+                        else if(evento_atual.key.code == sf::Keyboard::J && feitico::lancado == false)
 						{
-							cout << "countdown " << countdown << endl;
                             varinha::_estado_varinha = varinha::Accio;
                             feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
                         }
@@ -520,12 +519,11 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
                                 estado_jogo = jogo::Saindo;
                             }
                         break;
-                    case sf::Event::MouseButtonReleased:
-                        break;
                     default:
                         break;
                 }
             }
+			to_na_transicao = false;
             break;
         }
     }
@@ -672,6 +670,8 @@ void jogo::mostrar_transicao(ItensGanhar* destruidos)
     if (destruidos->QuantidadeElementos() == 6)
 	{
         _transicao_passou.MostrarHarry(janela);
+		_transicao_passou.MostarHarryMorrendo(janela);
+		_transicao_passou.MostrarBatalhaFinal(janela);
 		estado_jogo = jogo::Fase_Final;
     }
 	else
