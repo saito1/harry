@@ -26,11 +26,10 @@ public:
 
 void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGanhar* destruidos)
 {
-    
-    int i, j;
+    float i, j;
     Nodetype *Paux;
     sf::Texture imagem;
-    if (imagem.loadFromFile(resourcePath() + "transicao2.jpg") != true)
+    if (imagem.loadFromFile("imagens/transicao2.jpg") != true)
         return;
     
     sf::Sprite sprite;
@@ -63,6 +62,7 @@ void transicao_horcrux2::MostrarHorcrux(sf::RenderWindow & renderWindow, ItensGa
         Paux = Paux->get_next();
     }
     
+	feitico::lancado = false;
     renderWindow.display();
     
     sf::Clock clock;

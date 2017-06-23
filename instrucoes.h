@@ -11,11 +11,11 @@
 
 #include <stdio.h>
 
-#define QUANT_INSTRUCOES 11
+#define QUANT_INSTRUCOES 12
 
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
-#include "ResourcePath.hpp"
+ 
 #include <list>
 
 class Instrucoes

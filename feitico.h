@@ -5,7 +5,7 @@
 #include <SFML/Window.hpp>
 #include <iostream>
 #include <math.h>
-#include "ResourcePath.hpp"
+ 
 
 using namespace std;
 
@@ -31,7 +31,7 @@ public:
 	virtual float get_x();
 	virtual float get_y();
 
-	static float dir;
+	static double dir;
 	static bool lancado;
 
 private:

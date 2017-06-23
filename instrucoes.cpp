@@ -12,15 +12,15 @@ Instrucoes::instrucoes_opcoes Instrucoes::Mostrar(sf::RenderWindow& window)
 {
     //Carrega a imagem do menu de um arquivo
     sf::Texture imagem;
-    imagem.loadFromFile(resourcePath() + "instrucoes.jpg");
+    imagem.loadFromFile("imagens/instrucoes.jpg");
     
     sf::Sprite sprite;
     sprite.setTexture(imagem);
     
     std::string aux2 = std::to_string(get_k());
-    aux2 = "tutorial" + aux2 + ".jpg";
+    aux2 = "imagens/tutorial" + aux2 + ".jpg";
 
-    imagem_tutorial.loadFromFile(resourcePath() + aux2);
+    imagem_tutorial.loadFromFile(aux2);
     tutorial.setTexture(imagem_tutorial);
     tutorial.setOrigin(0, 0);
     tutorial.setPosition(165, 195);
@@ -61,8 +61,8 @@ Instrucoes::instrucoes_opcoes Instrucoes::Mostrar(sf::RenderWindow& window)
     
     itens_instrucao.push_back(botao_jogar);
     itens_instrucao.push_back(botao_menu);
-    itens_instrucao.push_back(botao_proximo);
-    itens_instrucao.push_back(botao_anterior);
+	itens_instrucao.push_back(botao_proximo);
+	itens_instrucao.push_back(botao_anterior);
     
     window.draw(sprite);
     window.draw(tutorial);
@@ -71,10 +71,9 @@ Instrucoes::instrucoes_opcoes Instrucoes::Mostrar(sf::RenderWindow& window)
     return obter_resposta_instrucao(window);
 }
 
-
 void Instrucoes::set_k(int j)
 {
-    if( (j >= 1) && (j < QUANT_INSTRUCOES))
+    if((j >= 1) && (j < QUANT_INSTRUCOES))
         k = j;
 }
 

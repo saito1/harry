@@ -145,7 +145,6 @@ void ListaSimples::Remove(Nodetype *Premove, bool &DeuCerto){
 }
 
 void ListaSimples::DeletaTudo(){
-    int i, n;
     bool ok;
     while(QuantidadeElementos()!=0){
         ProcuraRemove(P->get_id(), ok);

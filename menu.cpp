@@ -4,7 +4,7 @@ Menu::menu_inicial Menu::Mostrar(sf::RenderWindow& window)
 {
     //Carrega a imagem do menu de um arquivo
     sf::Texture imagem;
-    imagem.loadFromFile(resourcePath() + "menu.jpg");
+    imagem.loadFromFile("imagens/menu.jpg");
     
     sf::Sprite sprite;
     sprite.setTexture(imagem);

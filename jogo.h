@@ -29,7 +29,7 @@
 #include "Plano.hpp"
 #include "instrucoes.h"
 
-#include "ResourcePath.hpp"
+ 
 
 using namespace std;
 
@@ -40,6 +40,7 @@ public:
     static void CriandoTudo();
     static void JogarNovamente(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
     static void nova_fase(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
+	static void mostrar_fase_final(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
     
 private:
     static bool IsExiting();
@@ -49,7 +50,7 @@ private:
     static void mostrar_menu();
     static void mostrar_transicao(ItensGanhar* destruidos);
     static void mostrar_transicao_horcrux(ItensGanhar* destruidos);
-    static void mostrar_instrucao();
+	static void mostrar_instrucao();
     static void mostrar_ganhou(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
     static void mostrar_perdeu(varinha*, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos);
   
@@ -59,7 +60,7 @@ private:
     static void verifica_colisao(varinha*, Plano* plano, ItensGanhar* itensGanhar, ItensGanhar* destruidos, ListaSimples* todosItens);
     
     enum GameState {
-        Inicializado, Mostrando_Tela_Inicial, Pausado, Mostrando_Menu, Jogando, Saindo, Ganhando, Perdendo, Mostrando_Instrucao, Mostrando_Transicao_Passou, Mostrando_Transicao_Horcrux, Nova_Fase
+        Inicializado, Mostrando_Tela_Inicial, Pausado, Mostrando_Menu, Jogando, Saindo, Ganhando, Perdendo, Mostrando_Instrucao, Mostrando_Transicao_Passou, Mostrando_Transicao_Horcrux, Nova_Fase, Fase_Final
     }; // estado que o jogo pode estar durante a partida
     
     static GameState estado_jogo;

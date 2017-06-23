@@ -26,7 +26,7 @@ void varinha::update_todos()
 
 void varinha::desenhar(sf::RenderWindow& renderWindow)
 {
-    _imagem.loadFromFile(resourcePath() + "varinha.png");
+    _imagem.loadFromFile("imagens/varinha.png");
     _sprite.setTexture(_imagem);
     _sprite.setPosition(524, 115);
     _sprite.setOrigin(8, 8);

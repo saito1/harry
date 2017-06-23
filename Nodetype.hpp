@@ -4,7 +4,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "ResourcePath.hpp"
+ 
 #include "feitico.h"
 
 using namespace std;
@@ -30,6 +30,7 @@ public:
 
 	virtual void set_posicao(float x, float y);
 	virtual void set_origem(float x, float y);
+	virtual void move(float x, float y);
 
 	virtual sf::Rect<float> get_bounding_rect();
 
@@ -128,6 +129,11 @@ void Nodetype::set_posicao(float x, float y)
 void Nodetype::set_origem(float x, float y)
 {
 	_sprite.setOrigin(x, y);
+}
+
+void Nodetype::move(float x, float y)
+{
+	_sprite.move(x, y);
 }
 
 sf::Rect<float> Nodetype::get_bounding_rect()

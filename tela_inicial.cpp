@@ -3,7 +3,7 @@
 void Tela_Inicial::Mostrar(sf::RenderWindow & renderWindow)
 {
     sf::Texture imagem;
-    if (imagem.loadFromFile(resourcePath() + "inicial.jpg") != true)
+    if (imagem.loadFromFile("imagens/inicial.jpg") != true)
         return;
     
     sf::Sprite sprite;

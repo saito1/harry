@@ -3,7 +3,7 @@
 Ganhou::ganhou Ganhou::Mostrar(sf::RenderWindow & renderWindow)
 {
     sf::Texture imagem;
-    imagem.loadFromFile(resourcePath() + "ganhou.png");
+    imagem.loadFromFile("imagens/ganhou.png");
     
     sf::Sprite sprite;
     sprite.setTexture(imagem);
