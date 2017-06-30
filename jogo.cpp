@@ -43,8 +43,6 @@ void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* t
     
     metaText.setString("$ " + to_string(meta));
 
-    janela.create(sf::VideoMode(1024, 768), "HARRY", sf::Style::Close); //DEFINE TAMANHO DA JANELA, O QUE APARECE NO CABEÇALHO E FUNCOES DISPONIVEIS (FECHAR, RESIZE, MINIMIZAR)
-    
     sf::Texture imagem;
     imagem.loadFromFile("imagens/fundo2.jpg");
     background.setTexture(imagem); //DEFINE O BACKGROUND
@@ -58,7 +56,7 @@ void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* t
     plano->InsereNplano(20, todosItens, itensGanhar); // INICIALIZANDO O PLANO
     
     
-    estado_jogo = jogo::Mostrando_Tela_Inicial;
+   /* estado_jogo = jogo::Mostrando_Tela_Inicial;*/
 
     while (!IsExiting())
     {
@@ -70,6 +68,8 @@ void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* t
 
 void jogo::CriandoTudo()
 {
+	janela.create(sf::VideoMode(1024, 768), "Harry Potter e a Lista Sequencial", sf::Style::Close); //DEFINE TAMANHO DA JANELA, O QUE APARECE NO CABEÇALHO E FUNCOES DISPONIVEIS (FECHAR, RESIZE, MINIMIZAR)
+
     //GAME CLOCK & TIMER
     sf::Clock clock;
     
@@ -290,16 +290,17 @@ void jogo::CriandoTudo()
     livro->set_valor(10);
     todosItens.Insere(livro);
  
-    
+	estado_jogo = jogo::Fase_Final;
     jogo::Start(hook, clock, &plano, &todosItens, &itensGanhar, &destruidos);
+
 }
 
 // LEMBRAR DE SETTAR O FEITICO PARA NAO LANCADO
 
 void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
-    jogo::Start(hook, clock, plano, todosItens, itensGanhar, destruidos);
-    estado_jogo = jogo::Jogando;
+	estado_jogo = jogo::Jogando;
+	jogo::Start(hook, clock, plano, todosItens, itensGanhar, destruidos);
 }
                        
 void jogo::nova_fase(varinha * hook, sf::Clock & clock, Plano* plano, ListaSimples * todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
