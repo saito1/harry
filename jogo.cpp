@@ -54,9 +54,6 @@ void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* t
     
     itensGanhar->InicializaItensGanhar(todosItens);  // INICIALIZANDO ITENS GANHAR
     plano->InsereNplano(20, todosItens, itensGanhar); // INICIALIZANDO O PLANO
-    
-    
-   /* estado_jogo = jogo::Mostrando_Tela_Inicial;*/
 
     while (!IsExiting())
     {
@@ -68,7 +65,7 @@ void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* t
 
 void jogo::CriandoTudo()
 {
-	janela.create(sf::VideoMode(1024, 768), "Harry Potter e a Lista Sequencial", sf::Style::Close); //DEFINE TAMANHO DA JANELA, O QUE APARECE NO CABEÇALHO E FUNCOES DISPONIVEIS (FECHAR, RESIZE, MINIMIZAR)
+	janela.create(sf::VideoMode(1024, 768), "Harry Potter e a Lista Sequencial", sf::Style::Close); //DEFINE TAMANHO DA JANELA, O QUE APARECE NO CABEÃ‡ALHO E FUNCOES DISPONIVEIS (FECHAR, RESIZE, MINIMIZAR)
 
     //GAME CLOCK & TIMER
     sf::Clock clock;
@@ -295,8 +292,6 @@ void jogo::CriandoTudo()
 
 }
 
-// LEMBRAR DE SETTAR O FEITICO PARA NAO LANCADO
-
 void jogo::JogarNovamente(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* todosItens, ItensGanhar* itensGanhar, ItensGanhar* destruidos)
 {
 	estado_jogo = jogo::Jogando;
@@ -498,17 +493,6 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
 
                         break;
                     case sf::Event::MouseButtonPressed:
-						// COMENTADA PARA VER NO FINAL SE DER TEMPO - LANCAR FEITICO TAMBEM COM O MOUSE
-                        /*if (evento_atual.mouseButton.button == sf::Mouse::Left && feitico::lancado == false)
-                        {
-                            varinha::_estado_varinha = varinha::Bombarda;
-                            feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
-                        }
-                        if (evento_atual.mouseButton.button == sf::Mouse::Right && feitico::lancado == false)
-                        {
-                            varinha::_estado_varinha = varinha::Accio;
-                            feitico::dir = (hook->get_rotacao() + 90)*0.0174532925;
-                        }*/
                         if (evento_atual.mouseButton.button == sf::Mouse::Left)
                             if (botao_pausar.getGlobalBounds().contains(sf::Mouse::getPosition(janela).x, sf::Mouse::getPosition(janela).y))
                             {                                
