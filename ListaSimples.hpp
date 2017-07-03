@@ -13,7 +13,7 @@ class ListaSimples
 {
 public:
 	ListaSimples();
-	//~ListaSimples();
+	~ListaSimples();
 
 	void Cria(Nodetype *x);
 	bool Vazia();
@@ -29,7 +29,7 @@ public:
     Nodetype* PegaElementoAleatorioTodosTipoX(int x) const; // pega um elemento aleatorio do tipo X
 	Nodetype* PegaElementoN(int n) const; // pega o N-esimo elemento da lista
 	int QuantidadeElementos() const; // conta a quantidade de elementos da lista
-    Nodetype* PegaElementoInfo(string info, bool &DeuCerto) ; // pega o elemento da lista pelo ID
+    Nodetype* PegaElementoInfo(string info, bool &DeuCerto) ; // pega o elemento da lista pela Info
 
 private:
 	Nodetype *P;
@@ -41,6 +41,10 @@ private:
 
 ListaSimples::ListaSimples(){
 	P = NULL;
+}
+
+ListaSimples::~ListaSimples(){
+	
 }
 
 void ListaSimples::Cria(Nodetype *x){
@@ -168,7 +172,7 @@ Nodetype* ListaSimples::PegaElementoAleatorio() const{
 	Paux = P;
 	int r,i;
     if(QuantidadeElementos()>1)
-        r = (rand() % (QuantidadeElementos()-1) + 1); //TA DANDO ERRO AQUI QUANDO CHEGA LA PRO NIVEL 5 OU 6, CONFERIR
+        r = (rand() % (QuantidadeElementos()-1) + 1); 
     else
         r = 1;
 
@@ -201,7 +205,7 @@ Nodetype* ListaSimples::PegaElementoAleatorioTodosTipoX(int x) const{
             break;
             
         case 5:
-            r = (rand() % (QuantidadeElementos()-8) + 8); // NAO INSERE HORCRUX NEM VOLDEMORT
+            r = (rand() % (QuantidadeElementos()-8) + 8); // Nao insere Horcrux nem Voldemort
             break;
         default:
             r = 0; // should never happen
