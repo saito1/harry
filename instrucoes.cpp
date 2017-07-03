@@ -1,11 +1,3 @@
-//
-//  instrucoes.cpp
-//  HarryApp
-//
-//  Created by Renata Sarmet Smiderle Mendes on 22/06/17.
-//  Copyright © 2017 Renata Sarmet Smiderle Mendes. All rights reserved.
-//
-
 #include "instrucoes.h"
 
 Instrucoes::instrucoes_opcoes Instrucoes::Mostrar(sf::RenderWindow& window)
