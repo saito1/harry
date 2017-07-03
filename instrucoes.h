@@ -1,15 +1,7 @@
-//
-//  instrucoes.hpp
-//  HarryApp
-//
-//  Created by Renata Sarmet Smiderle Mendes on 22/06/17.
-//  Copyright © 2017 Renata Sarmet Smiderle Mendes. All rights reserved.
-//
-
 #ifndef INSTRUCOES_H
 #define INSTRUCOES_H
 
-#include <stdio.h>
+#include <iostream>
 
 #define QUANT_INSTRUCOES 12
 
