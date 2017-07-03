@@ -4,7 +4,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "ResourcePath.hpp"
 #include "ItensGanhar.hpp"
 #include "Nodetype.hpp"
 

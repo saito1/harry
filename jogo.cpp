@@ -287,7 +287,7 @@ void jogo::CriandoTudo()
     livro->set_valor(10);
     todosItens.Insere(livro);
  
-	estado_jogo = jogo::Fase_Final;
+	estado_jogo = jogo::Mostrando_Tela_Inicial;
     jogo::Start(hook, clock, &plano, &todosItens, &itensGanhar, &destruidos);
 
 }
@@ -462,8 +462,6 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
             janela.draw(totalText);
             janela.display();
 
-		
-            
             while (janela.pollEvent(evento_atual))
             {
 
