@@ -40,7 +40,6 @@ public:
 	void set_info(string);
 	int get_id() const;
 	void set_id(int);
-	void ExibeInformacoes() const;
 	void CopiaNode(Nodetype *original);
 	void set_tipo(int);
 	int get_tipo() const;
@@ -70,7 +69,7 @@ Nodetype::Nodetype(){
 }
 
 Nodetype::~Nodetype(){
-	//cout << "GAME OVER NO DESTRUTOR DO ID = " << get_id() <<endl;
+	
 }
 
 void Nodetype::carregar(std::string nomearquivo)
@@ -184,26 +183,13 @@ int Nodetype::get_valor() const
     return this->valor;
 }
 
-void Nodetype::ExibeInformacoes() const{
-	cout << "ID = " << get_id() << endl;
-	cout << "INFO = " << get_info() << endl;
-	cout << "NEXT = " << get_next()->get_info() << endl;
-	cout << "TIPO = " << get_tipo() << endl;
-	cout << "VALOR = " << get_valor() << endl;
-}
-
 void Nodetype::CopiaNode(Nodetype *original){
 
 	this->set_next(original->get_next());
-   // cout << endl << endl << "NEXT = " << this->get_next()->get_info() << endl;
 	this->set_id(original->get_id());
-   // cout << "ID = " << this->get_id() << endl;
 	this->set_info(original->get_info());
-    //cout << "INFO = " << this->get_info() << endl;
 	this->set_tipo(original->get_tipo());
-   // cout << "TIPO = " << this->get_tipo() << endl;
 	this->set_valor(original->get_valor());
-    //cout << "VALOR = " << this->get_valor() << endl;
 }
 
 
