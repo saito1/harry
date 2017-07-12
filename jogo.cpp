@@ -1,6 +1,4 @@
 #include "jogo.h"
-//Linha referente para remover o cmd no windows.
-//#include <windows.h>
 
 jogo::GameState jogo::estado_jogo = Inicializado;
 sf::RenderWindow jogo::janela;
@@ -8,6 +6,8 @@ sf::Text jogo::timerText;
 sf::Text jogo::totalText;
 sf::Text jogo::nivelText;
 sf::Text jogo::metaText;
+sf::Music jogo::musica_jogo;
+sf::Music jogo::musica_final;
 sf::Sprite jogo::background;
 bool feitico::lancado = false;
 varinha::estado_varinha varinha::_estado_varinha = Rotacionando;
@@ -45,6 +45,8 @@ void jogo::Start(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimples* t
     
     metaText.setString("$ " + to_string(meta));
 
+	musica_jogo.play();
+
     sf::Texture imagem;
     imagem.loadFromFile("imagens/fundo2.jpg");
     background.setTexture(imagem); //DEFINE O BACKGROUND
@@ -75,6 +77,12 @@ void jogo::CriandoTudo()
     //LOAD GAME TIMER FONT
     sf::Font Font;
     Font.loadFromFile("imagens/harry.ttf");
+
+	//LOADANDO AS MUSICAS
+	musica_jogo.setLoop(true);
+	musica_jogo.openFromFile("sons/harry.ogg");
+	musica_final.setLoop(true);
+	musica_final.openFromFile("sons/harry1.ogg");
     
     //convert countdown to a string
     string countdownString = "00:" + to_string(countdown);
@@ -478,8 +486,13 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
                         estado_jogo = jogo::Saindo;
                         break;
                     case sf::Event::KeyPressed:
-                        if (evento_atual.key.code == sf::Keyboard::Escape)
+						if (evento_atual.key.code == sf::Keyboard::Escape)
+						{
+							musica_final.pause();
+							musica_jogo.pause();
 							estado_jogo = jogo::Mostrando_Menu;
+						}
+							
                         else if(evento_atual.key.code == sf::Keyboard::F && feitico::lancado == false)
 						{
                             varinha::_estado_varinha = varinha::Bombarda;
@@ -496,11 +509,15 @@ void jogo::loop_jogo(varinha* hook, sf::Clock & clock, Plano* plano, ListaSimple
                         if (evento_atual.mouseButton.button == sf::Mouse::Left)
                             if (botao_pausar.getGlobalBounds().contains(sf::Mouse::getPosition(janela).x, sf::Mouse::getPosition(janela).y))
                             {                                
+								musica_final.pause();
+								musica_jogo.pause();
 								estado_jogo = jogo::Mostrando_Menu;
                             }
                         if (evento_atual.mouseButton.button == sf::Mouse::Left)
                             if (botao_sair.getGlobalBounds().contains(sf::Mouse::getPosition(janela).x, sf::Mouse::getPosition(janela).y))
                             {
+								musica_final.pause();
+								musica_jogo.pause();
                                 estado_jogo = jogo::Saindo;
                             }
                         break;
@@ -730,6 +747,9 @@ void jogo::mostrar_fase_final(varinha* hook, sf::Clock & clock, Plano* plano, Li
 	plano->DeletaTudo();
 	plano->InsereFaseFinal(todosItens);
 
+	musica_jogo.stop();
+	musica_final.play();
+
 	estado_jogo = jogo::Jogando;
 
 	while (!IsExiting())
@@ -742,9 +762,6 @@ void jogo::mostrar_fase_final(varinha* hook, sf::Clock & clock, Plano* plano, Li
                        
 int main(int argc, char** argv)
 {
-	//Linhas referentes para remover o cmd no windows.
-	//HWND hWnd = GetConsoleWindow();
-	//ShowWindow( hWnd, SW_HIDE );
     jogo::CriandoTudo();
     
     return 0;

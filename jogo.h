@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <time.h>
 #include <ctime>
@@ -69,6 +70,8 @@ private:
     static sf::Text nivelText;
     static sf::Text totalText;
     static sf::Text metaText;
+	static sf::Music musica_jogo;
+	static sf::Music musica_final;
     static int countdown;
     static int total;
     static int meta;
